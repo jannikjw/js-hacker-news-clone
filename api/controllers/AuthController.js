@@ -2,7 +2,6 @@
 const UserModel = require("../models/UserModel");
 
 const { body } = require("express-validator");
-const { sanitizeBody } = require("express-validator");
 const rejectRequestsWithValidationErrors = require("../middleware/rejectRequestsWithValidationErrors");
 
 const apiResponse = require("../helpers/apiResponse");
@@ -48,12 +47,6 @@ exports.register = [
 	body("password").isLength({ min: 6 }).trim().withMessage("Password must be 6 characters or greater."),
 	// reject request in case any of the validation rules are violated
 	rejectRequestsWithValidationErrors,
-	// Sanitize fields.
-	sanitizeBody("firstName").escape(),
-	sanitizeBody("lastName").escape(),
-	sanitizeBody("username").escape(),
-	sanitizeBody("email").escape(),
-	sanitizeBody("password").escape(),
 	// Process request after validation and sanitization.
     (req, res) => {
 		try {
