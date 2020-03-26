@@ -5,6 +5,7 @@ import { history } from '../../helpers';
 export const authActions = {
     register,
     verifyAccount,
+    requestNewVerificationCode,
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -48,4 +49,25 @@ function verifyAccount(email, otp) {
     function request(user) { return { type: authConstants.VERIFY_REQUEST_INITIATED, user } }
     function success(user) { return { type: authConstants.VERIFY_REQUEST_SUCCEEDED, user } } 
     function failure(error) { return { type: authConstants.VERIFY_REQUEST_FAILED, error } }
+}
+
+function requestNewVerificationCode(email) {
+    return dispatch => {
+        dispatch(request({ email }));
+
+        authService.requestNewVerificationCode(email)
+            .then(
+                response => {
+                    const message = response.message
+                    dispatch(success(message));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request(message) { return { type: authConstants.SEND_NEW_CODE_REQUEST_INITIATED, message } }
+    function success(message) { return { type: authConstants.SEND_NEW_CODE_REQUEST_SUCCEEDED, message } }
+    function failure(error) { return { type: authConstants.SEND_NEW_CODE_REQUEST_FAILED, error } }
 }
