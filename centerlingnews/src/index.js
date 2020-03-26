@@ -7,6 +7,8 @@ import * as serviceWorker from './serviceWorker';
 
 import './resources/style/index.scss';
 
+require('dotenv').config()
+
 render(
     <App />,
     document.getElementById('root')
