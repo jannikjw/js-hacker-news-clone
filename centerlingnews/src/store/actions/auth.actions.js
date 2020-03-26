@@ -39,6 +39,7 @@ function verifyAccount(email, otp) {
                 response => { 
                     const user = response.data
                     dispatch(success(user));
+                    dispatch(login(user)); // log the user in automatically after confirming their account
                     history.push('/');
                 },
                 error => {
@@ -48,7 +49,8 @@ function verifyAccount(email, otp) {
     };
 
     function request(user) { return { type: authConstants.VERIFY_REQUEST_INITIATED, user } }
-    function success(user) { return { type: authConstants.VERIFY_REQUEST_SUCCEEDED, user } } 
+    function success(user) { return { type: authConstants.VERIFY_REQUEST_SUCCEEDED, user } }
+    function login(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
     function failure(error) { return { type: authConstants.VERIFY_REQUEST_FAILED, error } }
 }
 
