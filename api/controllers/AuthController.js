@@ -5,6 +5,10 @@ const { body } = require("express-validator");
 const { sanitizeBody } = require("express-validator");
 const rejectRequestsWithValidationErrors = require("../middleware/rejectRequestsWithValidationErrors");
 
+const apiResponse = require("../helpers/apiResponse");
+const utility = require("../helpers/utility");
+const bcrypt = require("bcrypt-nodejs");
+
 
 /**
  * User registration.
@@ -48,9 +52,47 @@ exports.register = [
 	sanitizeBody("firstName").escape(),
 	sanitizeBody("lastName").escape(),
 	sanitizeBody("username").escape(),
-	sanitizeBody("email").escape().normalizeEmail(),
+	sanitizeBody("email").escape(),
 	sanitizeBody("password").escape(),
 	// Process request after validation and sanitization.
     (req, res) => {
-        res.json('hello world');
+		try {
+			//hash input password
+			bcrypt.hash(req.body.password,null,null,function(err, hash) {
+				// generate OTP for confirmation
+				let otp = utility.randomNumber(4);
+				// Create User object with escaped and trimmed data
+				var user = new UserModel(
+					{
+						firstName: req.body.firstName,
+						lastName: req.body.lastName,
+						username: req.body.username,
+						email: req.body.email,
+						password: hash,
+						confirmOTP: otp
+					}
+				);
+
+				// Save the user
+				user.save(function (err) {
+					if (err) { return apiResponse.ErrorResponse(res, err); }
+				});
+
+				// Todo: Send email with OTP to user
+
+				// return api reponse
+				let userData = {
+					_id: user._id,
+					firstName: user.firstName,
+					lastName: user.lastName,
+					username: user.username,
+					email: user.email
+				};
+				return apiResponse.successResponseWithData(res,"Registration Success.", userData);
+			});
+
+		} catch (err) {
+			//throw error in json response with status 500.
+			return apiResponse.ErrorResponse(res, err);
+		}
     }];
