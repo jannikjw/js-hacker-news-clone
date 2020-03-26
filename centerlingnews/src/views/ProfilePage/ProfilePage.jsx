@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { UpdatePasswordView } from './UpdatePasswordView';
 import { UpdateUserView } from './UpdateUserView';
 
 import './ProfilePage.scss';
@@ -24,8 +25,8 @@ class ProfilePage extends React.Component {
                             <label htmlFor="username">Username</label>
                             <input type="text" className="form-control" name="username" value={user.username} disabled/>
                         </div>
-                        
                         <UpdateUserView />
+                        <UpdatePasswordView />
                     </div>
                 }
             </div>
