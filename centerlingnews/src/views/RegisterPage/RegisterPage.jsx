@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { authActions } from '../../store/actions';
 import { authConstants } from '../../store/constants';
 
 import './RegisterPage.scss';
@@ -33,8 +34,10 @@ class RegisterPage extends React.Component {
         e.preventDefault();
 
         this.setState({ submitted: true });
+        const { firstName, lastName, username, email, password } = this.state;
+        const { dispatch } = this.props;
         if (this.handleLocalErrors()) {
-            // Todo: Make API call
+            dispatch(authActions.register(firstName, lastName, username, email, password))
         }
     }
 
