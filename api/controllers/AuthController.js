@@ -142,3 +142,49 @@ exports.verifyAccount = [
 			return apiResponse.ErrorResponse(res, err);
 		}
 	}];
+
+
+
+
+/**
+ * Resend the verification email with the one time passord (OTP).
+ *
+ * @param {string}      email
+ *
+ * @returns {Object}
+ */
+exports.resendVerificationCode = [
+	body("email").isLength({ min: 1 }).trim().withMessage("Email must be specified.")
+		.isEmail().withMessage("Email must be a valid email address."),
+	rejectRequestsWithValidationErrors,
+	(req, res) => {
+		try {
+			const query = {email : req.body.email};
+			UserModel.findOne(query, (err, user) => {
+				if (err) { return apiResponse.ErrorResponse(res, err); }
+
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "Email not found.");
+				}
+				if (user.isConfirmed) {
+					return apiResponse.unauthorizedResponse(res, "Account already confirmed.");
+				}
+
+				// Generate new otp
+				let otp = utility.randomNumber(4);
+				mailer.sendOTPEmail(user.email, otp).then(()=> {
+					user.isConfirmed = false;
+					user.confirmOTP = otp;
+					user.save(function (err) {
+						if (err) { return apiResponse.ErrorResponse(res, err); }
+						return apiResponse.successResponse(res,"Verification code sent.");
+					});
+				}).catch(err => {
+					return apiResponse.ErrorResponse(res, err);
+				});
+			});
+
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
