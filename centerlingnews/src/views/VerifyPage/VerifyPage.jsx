@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { authActions } from '../../store/actions';
 import { authConstants } from '../../store/constants';
 
 import './VerifyPage.scss';
@@ -32,10 +33,13 @@ class VerifyPage extends React.Component {
 
     submit() {
         this.setState({ submitted: true });
+        const { email, otp } = this.state;
+        const { dispatch } = this.props;
         if (this.handleLocalErrors()) {
-            // Todo: Submit verification Code
+            dispatch(authActions.verifyAccount(email, otp));
         }
     }
+
 
     handleLocalErrors() {
         const { email, otp } = this.state;
