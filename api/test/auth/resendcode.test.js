@@ -2,7 +2,7 @@ const { chai, server, expect } = require('./../testConfig');
 const UserModel = require('../../models/UserModel');
 
 // -----------------------------
-// (4) Test resend-otp Route
+// Test resend-otp Route
 // -----------------------------
 const testSuite = describe('/POST resend-verify-otp', () => {
 	// Prepare data for testing
