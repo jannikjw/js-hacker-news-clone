@@ -7,6 +7,7 @@ import { HomePage } from './views/HomePage';
 import { RegisterPage } from './views/RegisterPage';
 import { VerifyPage } from './views/VerifyPage';
 import { RequestVerificationCodePage } from './views/RequestVerificationCodePage';
+import { LoginPage } from './views/LoginPage';
 
 class App extends React.Component {
 
@@ -20,6 +21,7 @@ class App extends React.Component {
                         <Route path="/register" component={RegisterPage} />
                         <Route path="/verify" component={VerifyPage} />
                         <Route path="/request-code" component={RequestVerificationCodePage} />
+                        <Route path="/login" component={LoginPage} />
 
                     </div>
                 </Router>
