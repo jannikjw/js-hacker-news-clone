@@ -62,7 +62,6 @@ exports.sendAsync = function (from, to, subject, html)
 };
 
 
-// private functions
 exports.sendOTPEmail = function (to, otp) {
 	return new Promise((resolve, reject) => {
 		const verifyUrl = `${WEB_APP_HOST}/verify?email=${to}&otp=${otp}&s=1`
@@ -79,6 +78,32 @@ exports.sendOTPEmail = function (to, otp) {
 			FROM_EMAIL, 
 			to,
 			"Confirm Account",
+			html
+		).then(()=> {
+			resolve()
+		}).catch(err => {
+			reject()
+		});
+	})
+}
+
+
+exports.sendPasswordResetEmail = function(to, token) {
+	return new Promise((resolve, reject) => {
+		const resetUrl = `${WEB_APP_HOST}/reset-password?token=${token}`
+		const html = `
+			<p>Reset your password.</p>
+			<p>
+				<a href="${resetUrl}" target="_blank">
+					Click here to reset your password.
+				</a>
+			<p/>`;
+
+		// Send confirmation email
+		exports.send(
+			FROM_EMAIL,
+			to,
+			"Reset Password",
 			html
 		).then(()=> {
 			resolve()
