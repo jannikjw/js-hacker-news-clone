@@ -6,6 +6,7 @@ import { requestNewVerificationCode } from './requestNewVerificationCode.reducer
 import { login } from './login.reducer';
 import { updatePassword } from './updatepassword.reducer';
 import { forgotPassword } from './forgotPassword.reducer';
+import { resetPassword } from './resetPassword.reducer';
 
 const rootReducer = combineReducers({
   register,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   requestNewVerificationCode,
   login,
   updatePassword,
-  forgotPassword
+  forgotPassword,
+  resetPassword,
 });
 
 export default rootReducer;
