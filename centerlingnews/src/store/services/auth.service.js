@@ -10,6 +10,7 @@ export const authService = {
     getUser,
     updateUser,
     updatePassword,
+    requestPasswordResetLink,
 };
 
 // -----------------
@@ -95,6 +96,17 @@ function login(email, password) {
     };
 
     return fetch(`${API_URL}/auth/login`, requestOptions)
+        .then(handleAuthResponse)
+}
+
+function requestPasswordResetLink(email) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    };
+
+    return fetch(`${API_URL}/auth/send-reset-password`, requestOptions)
         .then(handleAuthResponse)
 }
 
