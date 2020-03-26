@@ -146,6 +146,7 @@ class RegisterPage extends React.Component {
     }
 
     render() {
+        const { registering, errors } = this.props;
         const { firstName, lastName, username, email, password, confirmPassword, submitted } = this.state;
 
         return (
