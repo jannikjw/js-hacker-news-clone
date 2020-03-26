@@ -8,6 +8,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const indexRouter = require("./routes/index");
+const apiRouter = require("./routes/api");
 
 const apiResponse = require("./helpers/apiResponse");
 
@@ -50,6 +51,7 @@ app.use(cors());
 
 //Route Prefixes
 app.use("/", indexRouter);
+app.use("/api/", apiRouter);
 
 // throw 404 if URL not found
 app.all("*", function(req, res) {

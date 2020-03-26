@@ -13,4 +13,4 @@
 exports.register = [
     (req, res) => {
         res.json('hello world');
-	}];
+    }];
