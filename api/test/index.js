@@ -12,6 +12,7 @@
  * (6) Update the User
  * (7) Update Password
  * (8) Request Password Reset Link
+ * (9) Reset Password With Token
  */
 describe('AUTH', () => {
 
@@ -23,5 +24,6 @@ describe('AUTH', () => {
 	require('./auth/updateuser.test')
 	require('./auth/updatepassword.test')
 	require('./auth/sendresetpassword.test')
+	require('./auth/resetpassword.test')
 
 });
