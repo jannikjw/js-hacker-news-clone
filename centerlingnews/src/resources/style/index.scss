@@ -1,0 +1,28 @@
+
+@import "./variables.scss";
+
+body {
+    margin: 0 auto;
+    max-width: 50em;
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 0 1em 4em 1em;
+    color: $body-color;
+    background-color: $body-bg;
+}
+
+h1,
+h2,
+strong {
+  color: $strong-color;
+}
+
+h2 {
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+a {
+    color: $primary-color;
+}
