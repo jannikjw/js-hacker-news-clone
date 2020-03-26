@@ -2,7 +2,7 @@ import { authConstants } from '../constants';
 
 const initialState = { sending: false, errors: {}, message: null };
 
-export function forgot(state = initialState, action) {
+export function forgotPassword(state = initialState, action) {
   switch (action.type) {
     case authConstants.FORGOT_PW_REQUEST_INITIATED:
       return {

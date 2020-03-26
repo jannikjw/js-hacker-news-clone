@@ -147,7 +147,7 @@ class ForgotPasswordPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { sending, errors, message } = state.forgot;
+    const { sending, errors, message } = state.forgotPassword;
     return {
         sending,
         errors,
