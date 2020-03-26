@@ -5,20 +5,29 @@ import { connect } from 'react-redux';
 import { authActions } from '../../store/actions';
 import { authConstants } from '../../store/constants';
 
+import qs from 'qs';
+
 import './VerifyPage.scss';
 
 class VerifyPage extends React.Component {
     constructor(props) {
         super(props);
 
+        const query = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
+
         this.state = {
-            email: '',
-            otp: '',
+            email: query.email || '',
+            otp: query.otp || '',
+            autoSubmit: query.s === '1' || false,
             submitted: false,
         };
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        if (this.state.autoSubmit) {
+            this.submit();
+        }
     }
 
     handleChange(e) {
