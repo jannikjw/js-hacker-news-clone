@@ -4,6 +4,7 @@ const UserModel = require("../models/UserModel");
 const { body } = require("express-validator");
 const bcrypt = require("bcrypt-nodejs");
 const rejectRequestsWithValidationErrors = require("../middleware/rejectRequestsWithValidationErrors");
+const authenticationRequired = require("../middleware/authenticationRequired");
 
 const apiResponse = require("../helpers/apiResponse");
 const utility = require("../helpers/utility");
@@ -233,6 +234,35 @@ exports.login = [
 				});
 				
 			});
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+
+
+// ----------------------------------------------------
+// -> For the routes below authentication is required. 
+// ---------------------------------------------------	
+
+/**
+ * Returns the logged in user.
+ * 
+ * @returns {Object}
+ */
+exports.getCurrentUser = [
+	authenticationRequired, // make sure the user is logged in
+	(req, res) =>  {
+		try {
+			UserModel.findOne({_id : req.user._id}).then(user => {
+
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "User not found.");
+				}
+
+				return apiResponse.successResponseWithData(res, "User found.", user);
+
+			});
+			
 		} catch (err) {
 			return apiResponse.ErrorResponse(res, err);
 		}
