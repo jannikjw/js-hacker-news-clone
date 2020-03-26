@@ -4,7 +4,7 @@ import { register } from './register.reducer';
 import { verify } from './verify.reducer';
 import { requestNewVerificationCode } from './requestNewVerificationCode.reducer';
 import { login } from './login.reducer';
-import { updatepassword } from './updatepassword.reducer';
+import { updatePassword } from './updatepassword.reducer';
 import { forgotPassword } from './forgotPassword.reducer';
 
 const rootReducer = combineReducers({
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   verify,
   requestNewVerificationCode,
   login,
-  updatepassword,
+  updatePassword,
   forgotPassword
 });
 
