@@ -36,6 +36,6 @@ exports.jwtForUser = function (user)
 
 exports.jwtForEmail = function (email) 
 {
-    return UserModel.findOne({email : req.body.email})
+    return UserModel.findOne({email : email})
             .then(exports.jwtForUser)
 }
