@@ -1,0 +1,75 @@
+{
+	"info": {
+		"_postman_id": "d4145d66-8c2e-4dd8-baf5-48be6597d4ee",
+		"name": "Centerling News",
+		"description": "A boilerplate for REST API Development with Node.js and Expressjs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Michael",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Fröhlich",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "m.froehlich1994@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "froehlichm",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
