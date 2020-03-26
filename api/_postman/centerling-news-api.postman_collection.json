@@ -31,16 +31,16 @@
 								},
 								{
 									"key": "lastName",
-									"value": "Fröhlich",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "m.froehlich1994@gmail.com",
+									"value": "Froehlich",
 									"type": "text"
 								},
 								{
 									"key": "email",
+									"value": "m.froehlich1994@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
 									"value": "password",
 									"type": "text"
 								},
@@ -62,6 +62,87 @@
 								"api",
 								"auth",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Confirm OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "m.froehlich1994@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "otp",
+									"value": "6442",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/verify-otp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend Confirm OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "m.froehlich1994@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/resend-verify-otp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"resend-verify-otp"
 							]
 						}
 					},
