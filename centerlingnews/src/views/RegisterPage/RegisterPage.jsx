@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { authConstants } from '../../store/constants';
+
 import './RegisterPage.scss';
 
 class RegisterPage extends React.Component {
@@ -105,7 +107,12 @@ class RegisterPage extends React.Component {
         }
 
         if (validationErrors.length > 0 ) {
-            // Todo: Show errors
+            function failure(error) { return { type: authConstants.REGISTER_REQUEST_FAILED, error } }
+            dispatch(failure({
+                status: 0,
+                message: 'Local Validation Error.',
+                data: validationErrors
+            }));
             return false
         }
 
