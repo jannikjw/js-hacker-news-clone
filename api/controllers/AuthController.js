@@ -93,3 +93,52 @@ exports.register = [
 		}
     }];
 
+
+/**
+ * Verify an Account with a one time password (OTP).
+ *
+ * @param {string}      email
+ * @param {string}      otp
+ *
+ * @returns {Object}
+ */
+exports.verifyAccount = [
+	body("email").isLength({ min: 1 }).trim().withMessage("Email must be specified.")
+		.isEmail().withMessage("Email must be a valid email address."),
+	body("otp").isLength({ min: 1 }).trim().withMessage("OTP must be specified."),
+	rejectRequestsWithValidationErrors,
+	(req, res) => {
+		try {
+			const query = {email : req.body.email};
+			UserModel.findOne(query).then(user => {
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "Specified email not found.");
+				}
+				if (user.isConfirmed){
+					return apiResponse.unauthorizedResponse(res, "Account already confirmed.");
+				}
+				if (user.confirmOTP != req.body.otp){
+					return apiResponse.unauthorizedResponse(res, "Verification code does not match");
+				}
+
+				// If we are here, the code matches
+				UserModel.findOneAndUpdate(query, {
+					isConfirmed: 1,
+					confirmOTP: null 
+				}, (err, updatedUser) => {
+					if (err) { return apiResponse.ErrorResponse(res, err); }
+
+					utility.jwtForUser(updatedUser)
+					.then(userData => {
+						return apiResponse.successResponseWithData(res,"Account confirmed.", userData);
+					}).catch(err => {
+						return apiResponse.successResponseWithData(res,"Account confirmed.", null);
+					})
+				});
+
+			});
+
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
