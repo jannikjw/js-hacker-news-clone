@@ -1,5 +1,8 @@
 const nodemailer = require("nodemailer");
 
+const FROM_EMAIL = process.env.EMAIL_SMTP_SENDER_EMAIL;
+const WEB_APP_HOST = process.env.WEB_APP_HOST;
+
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
 	host: process.env.EMAIL_SMTP_HOST,
@@ -57,3 +60,30 @@ exports.sendAsync = function (from, to, subject, html)
 		})
 	   });
 };
+
+
+// private functions
+exports.sendOTPEmail = function (to, otp) {
+	return new Promise((resolve, reject) => {
+		const verifyUrl = `${WEB_APP_HOST}/verify?email=${to}&otp=${otp}&s=1`
+		const html = `
+			<p>Please Confirm your Account.</p>
+			<p>Code: <strong>${otp}</strong></p>
+			<br>
+			<p>
+				<a href="${verifyUrl}" target="_blank">Click here to confirm</a>
+			<p/>`;
+
+		// Send confirmation email
+		exports.send(
+			FROM_EMAIL, 
+			to,
+			"Confirm Account",
+			html
+		).then(()=> {
+			resolve()
+		}).catch(err => {
+			reject()
+		});
+	})
+}
