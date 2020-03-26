@@ -17,4 +17,8 @@ export const authConstants = {
 
     // logout is a local operation – delete the JWT – and should always succeed
     LOGOUT_SUCCEEDED: 'LOGOUT_SUCCEEDED', 
+
+    UPDATE_PW_REQUEST_INITIATED: 'UPDATE_PW_REQUEST_INITIATED',
+    UPDATE_PW_REQUEST_SUCCEEDED: 'UPDATE_PW_REQUEST_SUCCEEDED',
+    UPDATE_PW_REQUEST_FAILED: 'UPDATE_PW_REQUEST_FAILED',
 };

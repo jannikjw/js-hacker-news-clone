@@ -253,7 +253,8 @@ exports.getCurrentUser = [
 	authenticationRequired, // make sure the user is logged in
 	(req, res) =>  {
 		try {
-			UserModel.findOne({_id : req.user._id}).then(user => {
+			UserModel.findOne({_id : req.user._id}, (err, user) => {
+				if (err) { return apiResponse.ErrorResponse(res, err); }
 
 				if (!user) {
 					return apiResponse.unauthorizedResponse(res, "User not found.");
@@ -272,3 +273,96 @@ exports.getCurrentUser = [
 			return apiResponse.ErrorResponse(res, err);
 		}
 	}];
+
+
+/**
+ * Update user account of an authenticated user.
+ * 
+ * @param {string}      firstName
+ * @param {string}      lastName
+ * 
+ * Note: The username and the email of the user are permanent for now.
+ * 
+ * @returns {Object}
+ */
+exports.updateUser = [
+	authenticationRequired, // make sure the user is logged in
+	body("firstName").isLength({ min: 1 }).trim().withMessage("First name must be specified.")
+		.isAlphanumeric().withMessage("First name has non-alphanumeric characters."),
+	body("lastName").isLength({ min: 1 }).trim().withMessage("Last name must be specified.")
+		.isAlphanumeric().withMessage("Last name has non-alphanumeric characters."),
+	rejectRequestsWithValidationErrors,
+	(req, res) =>  {
+		try {
+			UserModel.findOne({_id : req.user._id}, (err, user) => {
+				if (err) { return apiResponse.ErrorResponse(res, err); }
+
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "User not found.");
+				}
+
+				user.firstName = req.body.firstName;
+				user.lastName = req.body.lastName;
+
+				user.save(function (err) {
+					if (err) { return apiResponse.ErrorResponse(res, err); }
+
+					return apiResponse.successResponseWithData(res, "User updated.", user);
+				});
+
+			});
+			
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+	
+
+
+/**
+ * Update the password of the authenticated user.
+ * 
+ * @param {string}      currentPassword
+ * @param {string}      password
+ * 
+ * @returns {Object}
+ */
+exports.updatePassword = [
+	authenticationRequired, // make sure the user is logged in
+	body("password", "Your current password is required.").isLength({ min: 1 }).trim(),
+	body("newPassword").isLength({ min: 6 }).trim().withMessage("Password must be 6 characters or greater."),
+	rejectRequestsWithValidationErrors,
+	(req, res) =>  {
+		try {
+			UserModel.findOne({_id : req.user._id}, (err, user) => {
+				if (err) { return apiResponse.ErrorResponse(res, err); }
+
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "User not found.");
+				}
+
+				bcrypt.compare(req.body.password, user.password, function (err, same) {
+					if (err) {
+						return apiResponse.ErrorResponse(res, err);
+					}
+
+					if (!same) {
+						return apiResponse.validationErrorWithData(res, "Password wrong.", null);
+					}
+
+					bcrypt.hash(req.body.newPassword,null,null,function(err, hash) {
+						user.password = hash
+						user.save(function (err) {
+							if (err) { return apiResponse.ErrorResponse(res, err); }
+
+							return apiResponse.successResponse(res,"New password successfully set.");
+						});
+					});
+				});
+			});
+			
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+

@@ -7,7 +7,9 @@ export const authService = {
     verifyAccount,
     requestNewVerificationCode,
     login,
-    getUser
+    getUser,
+    updateUser,
+    updatePassword,
 };
 
 // -----------------
@@ -96,6 +98,7 @@ function login(email, password) {
         .then(handleAuthResponse)
 }
 
+// requires authentication
 function getUser() {
     const requestOptions = {
         method: 'GET',
@@ -103,4 +106,28 @@ function getUser() {
     };
 
     return fetch(`${API_URL}/auth/user`, requestOptions).then(handleResponse);
+}
+
+// requires authentication
+function updateUser(firstName, lastName) {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: authHeader(),
+        body: JSON.stringify({ firstName, lastName })
+    };
+
+    return fetch(`${API_URL}/auth/update`, requestOptions)
+        .then(handleResponse)
+}
+
+// requires authentication
+function updatePassword(password, newPassword) {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: authHeader(),
+        body: JSON.stringify({ password, newPassword })
+    };
+
+    return fetch(`${API_URL}/auth/update-password`, requestOptions)
+        .then(handleResponse)
 }
