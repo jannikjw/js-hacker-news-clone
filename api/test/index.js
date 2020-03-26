@@ -10,6 +10,7 @@
  * (4) Login
  * (5) Get User (Authentication Required)
  * (6) Update the User
+ * (7) Update Password
  */
 describe('AUTH', () => {
 
@@ -19,5 +20,6 @@ describe('AUTH', () => {
 	require('./auth/login.test')
 	require('./auth/getuser.test')
 	require('./auth/updateuser.test')
+	require('./auth/updatepassword.test')
 
 });
