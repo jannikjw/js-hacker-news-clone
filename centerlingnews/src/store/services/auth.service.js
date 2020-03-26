@@ -9,6 +9,7 @@ export const authService = {
     login,
     getUser,
     updateUser,
+    updatePassword,
 };
 
 // -----------------
@@ -119,3 +120,14 @@ function updateUser(firstName, lastName) {
         .then(handleResponse)
 }
 
+// requires authentication
+function updatePassword(password, newPassword) {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: authHeader(),
+        body: JSON.stringify({ password, newPassword })
+    };
+
+    return fetch(`${API_URL}/auth/update-password`, requestOptions)
+        .then(handleResponse)
+}
