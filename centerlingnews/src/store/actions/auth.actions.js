@@ -6,6 +6,8 @@ export const authActions = {
     register,
     verifyAccount,
     requestNewVerificationCode,
+    login,
+    getUser
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -38,6 +40,7 @@ function verifyAccount(email, otp) {
                 response => { 
                     const user = response.data
                     dispatch(success(user));
+                    dispatch(login(user)); // log the user in automatically after confirming their account
                     history.push('/');
                 },
                 error => {
@@ -47,7 +50,8 @@ function verifyAccount(email, otp) {
     };
 
     function request(user) { return { type: authConstants.VERIFY_REQUEST_INITIATED, user } }
-    function success(user) { return { type: authConstants.VERIFY_REQUEST_SUCCEEDED, user } } 
+    function success(user) { return { type: authConstants.VERIFY_REQUEST_SUCCEEDED, user } }
+    function login(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
     function failure(error) { return { type: authConstants.VERIFY_REQUEST_FAILED, error } }
 }
 
@@ -71,3 +75,44 @@ function requestNewVerificationCode(email) {
     function success(message) { return { type: authConstants.SEND_NEW_CODE_REQUEST_SUCCEEDED, message } }
     function failure(error) { return { type: authConstants.SEND_NEW_CODE_REQUEST_FAILED, error } }
 }
+
+function login(email, password, redirect) {
+    return dispatch => {
+        dispatch(request({ email }));
+
+        authService.login(email, password)
+            .then(
+                response => { 
+                    const user = response.data
+                    dispatch(success(user));
+                    history.push(redirect || '/');
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request(user) { return { type: authConstants.LOGIN_REQUEST_INITIATED, user } }
+    function success(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
+    function failure(error) { return { type: authConstants.LOGIN_REQUEST_FAILED, error } }
+}
+
+function getUser() {
+    return dispatch => {
+        dispatch(request());
+
+        authService.getUser()
+            .then(
+                response => dispatch(success(response.data)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    // Piggy-back on the Login Reducer here
+    // This function should be only called to check whether the JWT is valid, so there is no harm in doing so.
+    function request() { return { type: authConstants.LOGIN_REQUEST_INITIATED } }
+    function success(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
+    function failure(error) { return { type: authConstants.LOGIN_REQUEST_FAILED, error } }
+}
+

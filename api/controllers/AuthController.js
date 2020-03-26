@@ -4,6 +4,7 @@ const UserModel = require("../models/UserModel");
 const { body } = require("express-validator");
 const bcrypt = require("bcrypt-nodejs");
 const rejectRequestsWithValidationErrors = require("../middleware/rejectRequestsWithValidationErrors");
+const authenticationRequired = require("../middleware/authenticationRequired");
 
 const apiResponse = require("../helpers/apiResponse");
 const utility = require("../helpers/utility");
@@ -184,6 +185,89 @@ exports.resendVerificationCode = [
 				});
 			});
 
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+
+
+/**
+ * Signs in a user and return a Json Web Token (jwt).
+ *
+ * @param {string}      email
+ * @param {string}      password
+ *
+ * @returns {Object}
+ */
+exports.login = [
+	body("email").isLength({ min: 1 }).trim().withMessage("Email must be specified.")
+		.isEmail().withMessage("Email must be a valid email address."),
+	body("password").isLength({ min: 1 }).trim().withMessage("Password must be specified."),
+	rejectRequestsWithValidationErrors,
+	(req, res) => {
+		try {
+			UserModel.findOne({email : req.body.email}, (err, user) => {
+				if (err) { return apiResponse.ErrorResponse(res, err); }
+
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "Email or Password wrong.");
+				}
+
+				//Compare given password with db's hash.
+				bcrypt.compare(req.body.password, user.password, function (err,same) {
+					if(!same) {
+						return apiResponse.unauthorizedResponse(res, "Email or Password wrong.");
+					}
+					//Check account confirmation.
+					if(!user.isConfirmed){
+						return apiResponse.unauthorizedResponse(res, "Account is not confirmed. Please check your mail account.");
+					}
+					// Check User's account active or not.
+					if(!user.status) {
+						return apiResponse.unauthorizedResponse(res, "Account is not active. Please contact admin.");
+					}
+					utility.jwtForUser(user).then(userData => {
+						apiResponse.successResponseWithData(res,"Login Success.", userData);
+					}).catch(error => {
+						return apiResponse.ErrorResponse(res,"Internal Server Error.");
+					})
+				});
+				
+			});
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+
+
+// ----------------------------------------------------
+// -> For the routes below authentication is required. 
+// ---------------------------------------------------	
+
+/**
+ * Returns the logged in user.
+ * 
+ * @returns {Object}
+ */
+exports.getCurrentUser = [
+	authenticationRequired, // make sure the user is logged in
+	(req, res) =>  {
+		try {
+			UserModel.findOne({_id : req.user._id}).then(user => {
+
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "User not found.");
+				}
+
+				// Try to refresh the JWT for the user
+				utility.jwtForUser(user).then(userData => {
+					apiResponse.successResponseWithData(res,"User found.", userData);
+				}).catch(error => {
+					return apiResponse.successResponseWithData(res, "User found.", user);
+				})
+
+			});
+			
 		} catch (err) {
 			return apiResponse.ErrorResponse(res, err);
 		}

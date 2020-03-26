@@ -2,7 +2,7 @@ const { chai, server } = require('../testConfig');
 const UserModel = require('../../models/UserModel');
     
 // -----------------------------
-// (1) Test Register Route
+// Test Register Route
 // -----------------------------
 const testSuite = describe('/POST register', () => {
 

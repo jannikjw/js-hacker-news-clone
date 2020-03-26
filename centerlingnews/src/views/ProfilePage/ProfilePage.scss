@@ -1,0 +1,30 @@
+@import "../../resources/style/variables.scss";
+
+$input-width: 320px;
+
+.view-profile-page {
+    .form-group {
+        input {
+            width: $input-width;
+        }
+        
+        input[type=submit] {
+            width: $input-width + 2 * $input-padding;
+        }
+
+        input:disabled {
+            background-color: #efefefef;
+            border: 1px solid #eeeeee;
+            cursor: not-allowed;
+        }
+    }
+
+    .info-container {
+        font-size: 0.8em;
+
+        &::before {
+            content: "Info: ";
+            font-weight: bold;
+        }
+    }
+}
