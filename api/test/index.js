@@ -11,6 +11,7 @@
  * (5) Get User (Authentication Required)
  * (6) Update the User
  * (7) Update Password
+ * (8) Request Password Reset Link
  */
 describe('AUTH', () => {
 
@@ -21,5 +22,6 @@ describe('AUTH', () => {
 	require('./auth/getuser.test')
 	require('./auth/updateuser.test')
 	require('./auth/updatepassword.test')
+	require('./auth/sendresetpassword.test')
 
 });
