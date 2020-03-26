@@ -7,7 +7,8 @@ export const authActions = {
     verifyAccount,
     requestNewVerificationCode,
     login,
-    getUser
+    getUser,
+    logout
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -114,5 +115,11 @@ function getUser() {
     function request() { return { type: authConstants.LOGIN_REQUEST_INITIATED } }
     function success(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
     function failure(error) { return { type: authConstants.LOGIN_REQUEST_FAILED, error } }
+}
+
+function logout() {
+    return dispatch => {
+        dispatch({ type: authConstants.LOGOUT_SUCCEEDED });
+    };
 }
 

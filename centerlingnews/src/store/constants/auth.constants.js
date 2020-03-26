@@ -14,4 +14,7 @@ export const authConstants = {
     LOGIN_REQUEST_INITIATED: 'LOGIN_REQUEST_INITIATED',
     LOGIN_REQUEST_SUCCEEDED: 'LOGIN_REQUEST_SUCCEEDED',
     LOGIN_REQUEST_FAILED: 'LOGIN_REQUEST_FAILED',
+
+    // logout is a local operation – delete the JWT – and should always succeed
+    LOGOUT_SUCCEEDED: 'LOGOUT_SUCCEEDED', 
 };

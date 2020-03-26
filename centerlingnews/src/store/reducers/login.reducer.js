@@ -33,6 +33,14 @@ export function login(state = initialState, action) {
         loggedIn: false,
         errors: action.error,
       }};
+    case authConstants.LOGOUT_SUCCEEDED:
+      localStorage.removeItem(process.env.REACT_APP_LOCAL_STORAGE_KEY_FOR_USER);
+      return {...state, ...{
+        initialLoadHappened: true,
+        loading: false,
+        loggedIn: false,
+        user: null
+      }};
     default:
       return state
   }

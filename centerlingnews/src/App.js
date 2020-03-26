@@ -13,6 +13,7 @@ import { RegisterPage } from './views/RegisterPage';
 import { VerifyPage } from './views/VerifyPage';
 import { RequestVerificationCodePage } from './views/RequestVerificationCodePage';
 import { LoginPage } from './views/LoginPage';
+import { LogoutPage } from './views/LogoutPage';
 import { ProfilePage } from './views/ProfilePage';
 
 class App extends React.Component {
@@ -49,6 +50,7 @@ class App extends React.Component {
                             <Route path="/verify" component={VerifyPage} />
                             <Route path="/request-code" component={RequestVerificationCodePage} />
                             <Route path="/login" component={LoginPage} />
+                            <Route path="/logout" component={LogoutPage} />
 
                             <PrivateRoute path="/profile" component={ProfilePage} />
 
