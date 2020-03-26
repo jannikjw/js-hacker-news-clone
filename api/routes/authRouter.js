@@ -7,6 +7,7 @@ router.post('/register', AuthController.register);
 router.post('/verify-otp', AuthController.verifyAccount);
 router.post('/resend-verify-otp', AuthController.resendVerificationCode);
 router.post('/login', AuthController.login);
+router.post('/send-reset-password', AuthController.sendResetPassword);
 
 // Authentication Required
 router.get('/user', AuthController.getCurrentUser);
