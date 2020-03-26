@@ -69,20 +69,22 @@ exports.register = [
 				// Save the user
 				user.save(function (err) {
 					if (err) { return apiResponse.ErrorResponse(res, err); }
+
+					// Send the email, but don't wait for confirmation.
+					mailer.sendOTPEmail(user.email, otp).catch(err => {})
+
+					// return api reponse
+					let userData = {
+						_id: user._id,
+						firstName: user.firstName,
+						lastName: user.lastName,
+						username: user.username,
+						email: user.email
+					};
+					return apiResponse.successResponseWithData(res,"Registration Success.", userData);
 				});
 
-				// Send the email, but don't wait for confirmation.
-				mailer.sendOTPEmail(user.email, otp).catch(err => {})
 
-				// return api reponse
-				let userData = {
-					_id: user._id,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					username: user.username,
-					email: user.email
-				};
-				return apiResponse.successResponseWithData(res,"Registration Success.", userData);
 			});
 
 		} catch (err) {
@@ -90,3 +92,4 @@ exports.register = [
 			return apiResponse.ErrorResponse(res, err);
 		}
     }];
+
