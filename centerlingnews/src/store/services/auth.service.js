@@ -5,6 +5,7 @@ export const authService = {
     register,
     verifyAccount,
     requestNewVerificationCode,
+    login
 };
 
 // -----------------
@@ -57,5 +58,16 @@ function requestNewVerificationCode(email) {
     };
 
     return fetch(`${API_URL}/auth/resend-verify-otp`, requestOptions)
+        .then(handleAuthResponse)
+}
+
+function login(email, password) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    };
+
+    return fetch(`${API_URL}/auth/login`, requestOptions)
         .then(handleAuthResponse)
 }
