@@ -11,6 +11,7 @@ export const authService = {
     updateUser,
     updatePassword,
     requestPasswordResetLink,
+    resetPassword,
 };
 
 // -----------------
@@ -107,6 +108,17 @@ function requestPasswordResetLink(email) {
     };
 
     return fetch(`${API_URL}/auth/send-reset-password`, requestOptions)
+        .then(handleAuthResponse)
+}
+
+function resetPassword(token, password) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password })
+    };
+
+    return fetch(`${API_URL}/auth/reset-password`, requestOptions)
         .then(handleAuthResponse)
 }
 
