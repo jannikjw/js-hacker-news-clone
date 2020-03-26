@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './RegisterPage.scss';
@@ -195,12 +196,17 @@ class RegisterPage extends React.Component {
                         }
                     </div>
                     <div className="form-group">
-                        <input type="submit" className="form-control" name="login" value="Create Account"/>
+                        {!registering &&
+                            <input type="submit" className="form-control" name="login" value="Create Account"/>
+                        }
+                        {registering &&
+                            <input type="submit" className="form-control" name="login" value="Creating account ..." disabled/>
+                        }
                     </div>
                 </form>
                 <div className="error-container">
                     {this.showFieldIndepenentErrorMessage() && 
-                        <div className="error">TODO: show errors</div>
+                        <div className="error">{errors.message}</div>
                     }
                 </div>
                 <div className="link-group">
