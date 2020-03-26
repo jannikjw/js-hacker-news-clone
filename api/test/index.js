@@ -6,5 +6,6 @@
 describe('AUTH', () => {
 
 	require('./auth/register.test')
+	require('./auth/verify.test')
 
 });
