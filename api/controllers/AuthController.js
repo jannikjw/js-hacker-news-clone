@@ -259,7 +259,12 @@ exports.getCurrentUser = [
 					return apiResponse.unauthorizedResponse(res, "User not found.");
 				}
 
-				return apiResponse.successResponseWithData(res, "User found.", user);
+				// Try to refresh the JWT for the user
+				utility.jwtForUser(user).then(userData => {
+					apiResponse.successResponseWithData(res,"User found.", userData);
+				}).catch(error => {
+					return apiResponse.successResponseWithData(res, "User found.", user);
+				})
 
 			});
 			
