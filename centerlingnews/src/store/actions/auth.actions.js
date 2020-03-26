@@ -10,6 +10,7 @@ export const authActions = {
     getUser,
     logout,
     updateUser,
+    updatePassword
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -142,4 +143,25 @@ function updateUser(firstName, lastName) {
     function request() { return { type: authConstants.LOGIN_REQUEST_INITIATED } }
     function success(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
     function failure(error) { return { type: authConstants.LOGIN_REQUEST_FAILED, error } }
+}
+
+function updatePassword(password, newPassword) {
+    return dispatch => {
+        dispatch(request());
+
+        authService.updatePassword(password, newPassword)
+            .then(
+                response => {
+                    const message = response.message
+                    dispatch(success(message));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request() { return { type: authConstants.UPDATE_PW_REQUEST_INITIATED } }
+    function success(message) { return { type: authConstants.UPDATE_PW_REQUEST_SUCCEEDED, message } }
+    function failure(error) { return { type: authConstants.UPDATE_PW_REQUEST_FAILED, error } }
 }
