@@ -6,6 +6,7 @@ export const authActions = {
     register,
     verifyAccount,
     requestNewVerificationCode,
+    login
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -70,4 +71,26 @@ function requestNewVerificationCode(email) {
     function request(message) { return { type: authConstants.SEND_NEW_CODE_REQUEST_INITIATED, message } }
     function success(message) { return { type: authConstants.SEND_NEW_CODE_REQUEST_SUCCEEDED, message } }
     function failure(error) { return { type: authConstants.SEND_NEW_CODE_REQUEST_FAILED, error } }
+}
+
+function login(email, password, redirect) {
+    return dispatch => {
+        dispatch(request({ email }));
+
+        authService.login(email, password)
+            .then(
+                response => { 
+                    const user = response.data
+                    dispatch(success(user));
+                    history.push(redirect || '/');
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request(user) { return { type: authConstants.LOGIN_REQUEST_INITIATED, user } }
+    function success(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
+    function failure(error) { return { type: authConstants.LOGIN_REQUEST_FAILED, error } }
 }
