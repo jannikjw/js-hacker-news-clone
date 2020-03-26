@@ -9,7 +9,7 @@ function storeUserInLocalStorage(user) {
 
 // inject the user on initial load from the storage
 let user = JSON.parse(localStorage.getItem(USER_KEY));
-const initialState = user ? { initialLoadHappened: false, loading: true, loggedIn: true, user: user } : {};
+const initialState = { initialLoadHappened: false, loading: false, loggedIn: user ? true : false, user: user ? user : null };
 
 
 export function login(state = initialState, action) {
@@ -24,7 +24,8 @@ export function login(state = initialState, action) {
         initialLoadHappened: true,
         loading: false,
         loggedIn: true,
-        user: action.user
+        user: action.user,
+        errors: null
       }};
     case authConstants.LOGIN_REQUEST_FAILED:
       return {...state, ...{
