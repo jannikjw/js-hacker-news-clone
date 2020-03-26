@@ -11,5 +11,6 @@ router.post('/login', AuthController.login);
 // Authentication Required
 router.get('/user', AuthController.getCurrentUser);
 router.patch('/update', AuthController.updateUser);
+router.patch('/update-password', AuthController.updatePassword);
 
 module.exports = router;
