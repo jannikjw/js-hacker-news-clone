@@ -11,7 +11,8 @@ export const authActions = {
     logout,
     updateUser,
     updatePassword,
-    requestPasswordResetLink
+    requestPasswordResetLink,
+    resetPassword
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -187,4 +188,25 @@ function requestPasswordResetLink(email) {
     function request(message) { return { type: authConstants.FORGOT_PW_REQUEST_INITIATED, message } }
     function success(message) { return { type: authConstants.FORGOT_PW_REQUEST_SUCCEEDED, message } }
     function failure(error) { return { type: authConstants.FORGOT_PW_REQUEST_FAILED, error } }
+}
+
+function resetPassword(token, password) {
+    return dispatch => {
+        dispatch(request({ token, password }));
+
+        authService.resetPassword(token, password)
+            .then(
+                response => {
+                    const message = response.message
+                    dispatch(success(message));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request(message) { return { type: authConstants.RESET_PW_REQUEST_INITIATED, message } }
+    function success(message) { return { type: authConstants.RESET_PW_REQUEST_SUCCEEDED, message } }
+    function failure(error) { return { type: authConstants.RESET_PW_REQUEST_FAILED, error } }
 }
