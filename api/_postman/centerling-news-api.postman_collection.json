@@ -288,6 +288,59 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Password: Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTcxNDZjMmI1ZjBhZDIxNzE5MWU0NGMiLCJmaXJzdE5hbWUiOiJNaWNoYWVsIiwibGFzdE5hbWUiOiJGcm9laGxpY2giLCJ1c2VybmFtZSI6ImZyb2VtaWMiLCJlbWFpbCI6Im0uZnJvZWhsaWNoMTk5NEBnbWFpbC5jb20iLCJpYXQiOjE1ODQ1MjU0ODYsImV4cCI6MTU4NDYxMTg4Nn0.BTDO2d1mMa1d8Vb51PxWARkBU610rZLGE6LBx1emsmc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "newPassword",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/auth/update-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"auth",
+								"update-password"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}
