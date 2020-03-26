@@ -40,6 +40,7 @@ class RegisterPage extends React.Component {
 
     handleLocalErrors() {
         const { firstName, lastName, username, email, password, confirmPassword } = this.state;
+        const { dispatch } = this.props;
 
         let validationErrors = [];
 
