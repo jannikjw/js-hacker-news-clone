@@ -3,7 +3,8 @@ const API_URL = process.env.REACT_APP_API_HOST + '/api'
 
 export const authService = {
     register,
-    verifyAccount
+    verifyAccount,
+    requestNewVerificationCode,
 };
 
 // -----------------
@@ -45,5 +46,16 @@ function verifyAccount(email, otp) {
     };
 
     return fetch(`${API_URL}/auth/verify-otp`, requestOptions)
+        .then(handleAuthResponse)
+}
+
+function requestNewVerificationCode(email) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+    };
+
+    return fetch(`${API_URL}/auth/resend-verify-otp`, requestOptions)
         .then(handleAuthResponse)
 }
