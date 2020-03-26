@@ -2,7 +2,8 @@
 const API_URL = process.env.REACT_APP_API_HOST + '/api'
 
 export const authService = {
-    register
+    register,
+    verifyAccount
 };
 
 // -----------------
@@ -35,3 +36,14 @@ function register(firstName, lastName, username, email, password) {
         .then(handleAuthResponse);
 }
 
+
+function verifyAccount(email, otp) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+    };
+
+    return fetch(`${API_URL}/auth/verify-otp`, requestOptions)
+        .then(handleAuthResponse)
+}
