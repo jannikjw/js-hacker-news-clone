@@ -10,7 +10,9 @@ export const authActions = {
     getUser,
     logout,
     updateUser,
-    updatePassword
+    updatePassword,
+    requestPasswordResetLink,
+    resetPassword
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -164,4 +166,47 @@ function updatePassword(password, newPassword) {
     function request() { return { type: authConstants.UPDATE_PW_REQUEST_INITIATED } }
     function success(message) { return { type: authConstants.UPDATE_PW_REQUEST_SUCCEEDED, message } }
     function failure(error) { return { type: authConstants.UPDATE_PW_REQUEST_FAILED, error } }
+}
+
+
+function requestPasswordResetLink(email) {
+    return dispatch => {
+        dispatch(request({ email }));
+
+        authService.requestPasswordResetLink(email)
+            .then(
+                response => {
+                    const message = response.message
+                    dispatch(success(message));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request(message) { return { type: authConstants.FORGOT_PW_REQUEST_INITIATED, message } }
+    function success(message) { return { type: authConstants.FORGOT_PW_REQUEST_SUCCEEDED, message } }
+    function failure(error) { return { type: authConstants.FORGOT_PW_REQUEST_FAILED, error } }
+}
+
+function resetPassword(token, password) {
+    return dispatch => {
+        dispatch(request({ token, password }));
+
+        authService.resetPassword(token, password)
+            .then(
+                response => {
+                    const message = response.message
+                    dispatch(success(message));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    function request(message) { return { type: authConstants.RESET_PW_REQUEST_INITIATED, message } }
+    function success(message) { return { type: authConstants.RESET_PW_REQUEST_SUCCEEDED, message } }
+    function failure(error) { return { type: authConstants.RESET_PW_REQUEST_FAILED, error } }
 }

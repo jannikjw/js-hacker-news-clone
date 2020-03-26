@@ -1,5 +1,6 @@
 
 const UserModel = require("../models/UserModel");
+const ResetTokenModel = require("../models/ResetTokenModel");
 
 const { body } = require("express-validator");
 const bcrypt = require("bcrypt-nodejs");
@@ -9,6 +10,8 @@ const authenticationRequired = require("../middleware/authenticationRequired");
 const apiResponse = require("../helpers/apiResponse");
 const utility = require("../helpers/utility");
 const mailer = require("../helpers/mailer");
+const crypto = require('crypto');
+
 
 /**
  * User registration.
@@ -233,6 +236,111 @@ exports.login = [
 					})
 				});
 				
+			});
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+
+
+/**
+ * Send reset password link
+ *
+ * @param {string}      email
+ *
+ * @returns {Object}
+ */
+exports.sendResetPassword = [
+	body("email").isLength({ min: 1 }).trim().withMessage("Email must be specified.")
+		.isEmail().withMessage("Email must be a valid email address."),
+	rejectRequestsWithValidationErrors,
+	(req, res) => {
+		try {
+			const query = {email : req.body.email};
+			UserModel.findOne(query).then(user => {
+				if (!user) {
+					return apiResponse.unauthorizedResponse(res, "Specified email not found.");
+				}
+				// Delete all previous tokens for this user
+				ResetTokenModel.deleteMany(query).then(() => {
+					// Generate random token
+					const token = crypto.randomBytes(32).toString('hex');
+					// Store reset token
+					let resetToken = new ResetTokenModel(
+						{
+							token: token,
+							email: user.email,
+							sentAt: null
+						}
+					);
+					
+					// Save the reset token
+					resetToken.save(function (err) {
+						if (err) { return apiResponse.ErrorResponse(res, err); }
+
+						// Send password reset email
+						mailer.sendPasswordResetEmail(user.email, token)
+						.then(()=> {
+							resetToken.sentAt = new Date();
+							// Save the reset token
+							resetToken.save(function (err) {
+								if (err) { return apiResponse.ErrorResponse(res, err); }
+								return apiResponse.successResponse(res,"Reset link sent.");
+							});
+						}).catch(err => {
+							return apiResponse.ErrorResponse(res, err);
+						})
+					});
+				});		
+	
+			});
+
+		} catch (err) {
+			return apiResponse.ErrorResponse(res, err);
+		}
+	}];
+
+
+/**
+ * Reset a password with a valid token
+ *
+ * @param {string}      token
+ * @param {string}      password
+ *
+ * @returns {Object}
+ */
+exports.resetPassword = [
+	body("token").isLength({ min: 1 }).trim()
+		.withMessage("Token must be specified."),
+	body("token").isLength({ min: 6 }).trim().withMessage("Password must be 6 characters or greater."),
+	body("password").isLength({ min: 6 }).trim().withMessage("Password must be 6 characters or greater."),
+	rejectRequestsWithValidationErrors,
+	(req, res) => {
+		try {
+			let query = {token : req.body.token};
+			ResetTokenModel.findOne(query, null, { sort: { 'sentAt' : -1 } }).then(resetToken => {
+				if (!resetToken) {
+					return apiResponse.unauthorizedResponse(res, "Token not found.");
+				}
+
+				let userQuery = {email : resetToken.email }
+				UserModel.findOne(userQuery).then(user => {
+					if (!user) {
+						return apiResponse.unauthorizedResponse(res, "Token invalid.");
+					}
+					//hash input password
+					bcrypt.hash(req.body.password,null,null,function(err, hash) {
+						user.password = hash
+						// Save the user
+						user.save(function (err) {
+							if (err) { return apiResponse.ErrorResponse(res, err); }
+							resetToken.remove(function(err){
+								if (err) { return apiResponse.ErrorResponse(res, err); }
+								return apiResponse.successResponse(res,"Password succesfully set.");
+							});
+						});
+					})
+				})
 			});
 		} catch (err) {
 			return apiResponse.ErrorResponse(res, err);

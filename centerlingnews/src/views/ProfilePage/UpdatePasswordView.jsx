@@ -171,7 +171,7 @@ class UpdatePasswordView extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { updating, errors, message} = state.updatepassword;
+    const { updating, errors, message} = state.updatePassword;
     const { user } = state.login;
     return {
         updating,

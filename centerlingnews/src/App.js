@@ -15,6 +15,8 @@ import { RequestVerificationCodePage } from './views/RequestVerificationCodePage
 import { LoginPage } from './views/LoginPage';
 import { LogoutPage } from './views/LogoutPage';
 import { ProfilePage } from './views/ProfilePage';
+import { ForgotPasswordPage } from './views/ForgotPasswordPage';
+import { ResetPasswordPage } from './views/ResetPasswordPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -51,6 +53,8 @@ class App extends React.Component {
                             <Route path="/request-code" component={RequestVerificationCodePage} />
                             <Route path="/login" component={LoginPage} />
                             <Route path="/logout" component={LogoutPage} />
+                            <Route path="/forgot-password" component={ForgotPasswordPage} />
+                            <Route path="/reset-password" component={ResetPasswordPage} />
 
                             <PrivateRoute path="/profile" component={ProfilePage} />
 

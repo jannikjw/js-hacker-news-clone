@@ -2,7 +2,7 @@ import { authConstants } from '../constants';
 
 const initialState = { updating: false, errors: {}, message: null };
 
-export function updatepassword(state = initialState, action) {
+export function updatePassword(state = initialState, action) {
   switch (action.type) {
     case authConstants.UPDATE_PW_REQUEST_INITIATED:
       return {
