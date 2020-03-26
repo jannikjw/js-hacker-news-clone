@@ -2,12 +2,12 @@
 const UserModel = require("../models/UserModel");
 
 const { body } = require("express-validator");
+const bcrypt = require("bcrypt-nodejs");
 const rejectRequestsWithValidationErrors = require("../middleware/rejectRequestsWithValidationErrors");
 
 const apiResponse = require("../helpers/apiResponse");
 const utility = require("../helpers/utility");
-const bcrypt = require("bcrypt-nodejs");
-
+const mailer = require("../helpers/mailer");
 
 /**
  * User registration.
@@ -71,7 +71,8 @@ exports.register = [
 					if (err) { return apiResponse.ErrorResponse(res, err); }
 				});
 
-				// Todo: Send email with OTP to user
+				// Send the email, but don't wait for confirmation.
+				mailer.sendOTPEmail(user.email, otp).catch(err => {})
 
 				// return api reponse
 				let userData = {
