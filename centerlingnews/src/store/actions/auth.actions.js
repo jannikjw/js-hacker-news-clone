@@ -8,7 +8,8 @@ export const authActions = {
     requestNewVerificationCode,
     login,
     getUser,
-    logout
+    logout,
+    updateUser,
 };
 
 function register(firstName, lastName, username, email, password) {
@@ -123,3 +124,22 @@ function logout() {
     };
 }
 
+function updateUser(firstName, lastName) {
+    return dispatch => {
+        dispatch(request());
+
+        authService.updateUser(firstName, lastName)
+            .then(
+                response => dispatch(success(response.data)),
+                error => {
+                    dispatch(failure(error));
+                }
+            );
+    };
+
+    // Piggy-back on the Login Reducer here
+    // This function should be only called to check whether the JWT is valid, so there is no harm in doing so.
+    function request() { return { type: authConstants.LOGIN_REQUEST_INITIATED } }
+    function success(user) { return { type: authConstants.LOGIN_REQUEST_SUCCEEDED, user } }
+    function failure(error) { return { type: authConstants.LOGIN_REQUEST_FAILED, error } }
+}
