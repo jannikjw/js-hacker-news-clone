@@ -9,6 +9,7 @@
     "dotenv": "^8.2.0",
     "history": "^4.10.1",
     "node-sass": "^4.13.1",
+    "qs": "^6.9.3",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-redux": "^7.2.0",
