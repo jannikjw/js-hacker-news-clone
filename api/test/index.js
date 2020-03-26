@@ -8,6 +8,7 @@
  * (2) Verify OTP
  * (3) Request New OTP
  * (4) Login
+ * (5) Get User (Authentication Required)
  */
 describe('AUTH', () => {
 
@@ -15,5 +16,6 @@ describe('AUTH', () => {
 	require('./auth/verify.test')
 	require('./auth/resendcode.test')
 	require('./auth/login.test')
+	require('./auth/getuser.test')
 
 });
