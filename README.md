@@ -55,17 +55,56 @@ These readings are optional, but will help you understand advanced concepts (suc
 - The only introduction to Redux you’ll ever need (~25 minutes read time)https://medium.com/javascript-in-plain-english/the-only-introduction-to-redux-and-react-redux-youll-ever-need-8ce5da9e53c6
 - Ninja Code (How to not write JS) (~10 minutes read time)https://javascript.info/ninja-code
 - Javascript Clean Code Best Practices (~10 minutes read time) https://blog.risingstack.com/javascript-clean-coding-best-practices-node-js-at-scale/
+- A successful Git branching model (~10 minutes read time)https://nvie.com/posts/a-successful-git-branching-model/
+- How to write a Git Commit Message (~10 minutes read time)https://chris.beams.io/posts/git-commit/
 
 
+### 2. Finish implementing the “Centerling News” application in this repository
 
-### 2. Setup your development enviroment
+- Fork this repository
+- Implement the open user stories (see presentation or issues)
+- Make sure to follow Git Flow 
+    - For each user story create a feature branch from develop
+    - Once implemented merge the feature branch back into develop using a merge request, in which you summarize the changes you made
+    - Once all user stories are developed, create a merge request from develop into master and assign your coach as reviewer (latest 27th April)
 
-The following steps need to be completed before you can start coding. We will do some of these steps together in class. For all ofthis, make sure you have VS Code, NodeJS and npm installed.
+
+### 3. Come up with a project idea with another student from this class.
+- Your project should include CRUD functionality and require implementation across React, Express and MongoDB.
+- You should have a partner and idea by the next session, since we will develop the idea in a workshop format. 
+
+### 4. Once you finish all of the above tasks, fill out the following survey
+- https://forms.gle/bay5hHKDii1uwhTG9
+
+
+## Getting Started
+
+The following section describes how to get started with the code provided in this repository. There is also a step by step guide in the assignment 2 pdf.
+
+The following steps need to be completed before you can start coding. We will do some of these steps together in class. For all of this, make sure you have VS Code, NodeJS and npm installed.
 
 #### 2.1 Fork this repository
+- Fork this repository, so you have and Assignment 2 repository in your personal namespace
+
 #### 2.2.Clone this repository and set up SourceTree
+- Clone the forked repository with Sourcetree
+
 #### 2.3 Register and Set Up Mongo Atlas
+- Register a MongoDB Atlas Account https://www.mongodb.com/cloud/atlas/
+- Allow Network Access from anywhere
+- For your cluster, copy the connection string (you may need to create a DB user first)
+
 #### 2.4 Set up the Server
+- Open a terminal in the `api/` folder of your cloned repository
+- Copy the `.env.example` to `.env` and configure the environment variables
+- Run `npm install`
+- Run `npm run start`
+
 #### 2.5 Set the React Client
+- Open a terminal in the `centerlingnews/` folder of your cloned repository
+- Copy the `.env.example` to `.env` and configure the environment variables
+- Run `yarn install`
+- Run `yarn start`
+
 
 
