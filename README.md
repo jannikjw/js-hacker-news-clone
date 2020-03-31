@@ -98,7 +98,7 @@ The following steps need to be completed before you can start coding. We will do
 - Open a terminal in the `api/` folder of your cloned repository
 - Copy the `.env.example` to `.env` and configure the environment variables
 - Run `npm install`
-- Run `npm run start`
+- Run `npm run dev` 
 
 #### 2.5 Set the React Client
 - Open a terminal in the `centerlingnews/` folder of your cloned repository
