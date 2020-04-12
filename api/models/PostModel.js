@@ -15,9 +15,15 @@ const PostSchema = new Schema(
   }
 );
 
-// hide some fields from the API reponse
-UserSchema.method("toJSON", function () {
-  return this.toObject();
+PostSchema.method("toApiRepresentation", function (user) {
+  let obj = this.toObject();
+  obj.author = user._id;
+  obj.username = user.username;
+  return obj;
+});
+
+PostSchema.method("updateLastInteraction", function () {
+  return;
 });
 
 module.exports = mongoose.model("Post", PostSchema);

@@ -16,7 +16,6 @@ mongoose.set("useFindAndModify", false); //false to use native findOneAndUpdate(
  *
  * @param {string}      title
  * @param {string}      url
- * @param {string}
  *
  * @return {Post}
  */
@@ -35,7 +34,7 @@ exports.createPost = [
       require_protocol: true,
       require_valid_protocol: true,
     })
-    .withMessage("Please eter a valid URL leading with https:// or http://.")
+    .withMessage("Please enter a valid URL leading with https:// or http://.")
     .trim(),
   rejectRequestsWithValidationErrors,
   (req, res) => {
@@ -51,8 +50,8 @@ exports.createPost = [
         if (err) {
           return apiResponse.ErrorResponse(res, err);
         }
-        let postData = post.toApiRepresentation(req.user_id);
-        savedPost.updateLastInteraction(0);
+        let postData = post.toApiRepresentation(req.user._id);
+        // savedPost.updateLastInteraction(0);
         return apiResponse.successResponseWithData(
           res,
           "Post successfully created",

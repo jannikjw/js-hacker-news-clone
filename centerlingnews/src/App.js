@@ -16,6 +16,7 @@ import { LogoutPage } from "./views/LogoutPage";
 import { ProfilePage } from "./views/ProfilePage";
 import { ForgotPasswordPage } from "./views/ForgotPasswordPage";
 import { ResetPasswordPage } from "./views/ResetPasswordPage";
+import { NewPostPage } from "./views/NewPostPage";
 
 class App extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class App extends React.Component {
               <Route path="/logout" component={LogoutPage} />
               <Route path="/forgot-password" component={ForgotPasswordPage} />
               <Route path="/reset-password" component={ResetPasswordPage} />
-
+              <PrivateRoute path="/submit" component={NewPostPage} />
               <PrivateRoute path="/profile" component={ProfilePage} />
             </div>
           )}
