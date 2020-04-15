@@ -58,6 +58,29 @@ exports.createPost = [
           postData
         );
       });
-    } catch {}
+    } catch (err) {
+      return apiResponse.ErrorResponse(res, err);
+    }
   },
+];
+
+/**
+ * Get all posts.
+ * 
+ * @returns {Object}
+ */
+
+
+exports.getAll = [
+  authenticationOptional,
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    try {
+      PostModel.find()
+        .then(exercises => res.json(exercises))
+        .catch(err => res.status(400).json('Error: ' + err));
+    } catch (err) {
+      return apiResponse.ErrorResponse(res, err);
+    }
+  }
 ];
