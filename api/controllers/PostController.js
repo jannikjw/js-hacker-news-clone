@@ -84,3 +84,19 @@ exports.getAll = [
     }
   }
 ];
+
+
+/**
+ * Delete own posts.
+ * 
+ * @returns {Object}
+ */
+exports.delete = [
+  authenticationRequired,
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    PostModel.findByIdAndDelete(req.params.post_id)
+      .then(() => res.json('Post deleted.'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  }
+];
