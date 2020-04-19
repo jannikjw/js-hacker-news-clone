@@ -1,17 +1,7 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 
 import "./PostsPage.scss";
-
-const Post = props => (
-  <tr>
-    <td>
-      <a to={props.post.url}>{props.post.title}</a>
-    </td>
-    <td>{props.post.url}</td>
-    <td>{props.post.username}</td>
-  </tr>
-)
-
 
 class PostsPage extends React.Component {
   constructor(props) {
@@ -25,8 +15,28 @@ class PostsPage extends React.Component {
   }
 
   postList() {
+    let count = 0;
     return this.state.posts.map(currentPost => {
-      return <Post post={currentPost} key={currentPost._id} />;
+      count++;
+      let hostName = new URL(currentPost.url).hostname;
+      hostName = hostName.replace('www.', '');
+
+      return (
+        <React.Fragment key={currentPost._id}>
+          <tr>
+            <td className="title">{count}</td>
+            <td>
+              <a href={currentPost.url} rel="noopener noreferrer" target="_blank" className="title">{currentPost.title}</a>
+              <span className="url"> (<a href={currentPost.url} rel="noopener noreferrer" target="blank"><span>{hostName}</span></a>)</span>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><Link className="user" to={"/user/" + currentPost.author}>{currentPost.username} </Link></td>
+          </tr>
+          <tr></tr>
+        </React.Fragment>
+      );
     })
   }
 
@@ -37,17 +47,20 @@ class PostsPage extends React.Component {
     fetch(endpoint)
       .then((response) => {
         response.json().then((data) => {
+          data.sort(function (a, b) {
+            return new Date(b.date) - new Date(a.date);
+          })
+          data.reverse()
           this.setState({ posts: data })
         });
       })
       .catch((error) => {
         console.log('Fetch Error :-S', error)
-      })
-      ;
+      });
   }
 
   render() {
-    console.log(this.posts)
+    console.log(this.state.posts)
     return (
       <div className={`view-posts-page`}>
         <h2>Centerling News: All Posts!</h2>

@@ -1,3 +1,37 @@
 // styling specific for the specific component
 .view-posts-page {
+  .title {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 1.2em;
+  }
+
+  .title:visited {
+    color: rgb(196, 238, 128);
+  }
+
+  .url {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+
+  }
+  
+.url a {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+  }
+
+  .url a:hover {
+    text-decoration: underline;
+
+  }
+
+  .user {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+  }
+
+  .user:hover {
+    text-decoration: underline;
+  }
 }
