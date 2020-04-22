@@ -84,3 +84,25 @@ exports.getAll = [
     }
   }
 ];
+
+
+/**
+ * Delete own posts.
+ * 
+ * @returns {Object}
+ */
+exports.delete = [
+  authenticationRequired,
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    PostModel.findById(req.params.post_id, 'author', function (err, post) {
+      if (post.author === req.user._id) {
+        PostModel.findByIdAndDelete(req.params.post_id)
+          .then(() => res.json('Post deleted.'))
+      } else {
+        res.status(401).json('Error: You do not have the right to delete this post!')
+      }
+    })
+      .catch(err => res.status(400).json('Error: ' + err));
+  }
+];

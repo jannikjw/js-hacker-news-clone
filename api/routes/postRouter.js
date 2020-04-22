@@ -8,7 +8,7 @@ router.get("/", PostController.getAll);
 
 //Authentication required
 router.post("/", PostController.createPost); // POST /api/posts/
-// router.delete("/:post_id", PostController.delete);
+router.delete("/:post_id", PostController.delete);
 // router.put("/:post_id", PostController.update);
 
 module.exports = router;

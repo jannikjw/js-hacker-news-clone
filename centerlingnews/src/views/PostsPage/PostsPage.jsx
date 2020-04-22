@@ -1,16 +1,21 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { authHeader } from "../../helpers";
 
 import "./PostsPage.scss";
+
+const API_URL = process.env.REACT_APP_API_HOST + "/api";
 
 class PostsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.componentDidMount = this.componentDidMount.bind(this);
+    this.deletePost = this.deletePost.bind(this);
 
     this.state = {
-      posts: []
+      posts: [],
+      currentUser: ''
     };
   }
 
@@ -33,6 +38,7 @@ class PostsPage extends React.Component {
           <tr>
             <td></td>
             <td><Link className="user" to={"/user/" + currentPost.author}>{currentPost.username} </Link></td>
+            {this.showDelete(currentPost._id, currentPost.author)}
           </tr>
           <tr></tr>
         </React.Fragment>
@@ -40,9 +46,19 @@ class PostsPage extends React.Component {
     })
   }
 
+  showDelete(postID, author) {
+    console.log(this.state.currentUser.username)
+    if (this.state.currentUser._id === author) {
+      console.log("Got here")
+      return (
+        <td><button onClick={() => { this.deletePost(postID) }}>delete</button></td>
+      )
+    }
+  }
+
   componentDidMount() {
-    const API_URL = process.env.REACT_APP_API_HOST + "/api";
     const endpoint = API_URL + "/posts"; // 'api/posts
+    this.setState({ currentUser: JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCAL_STORAGE_KEY_FOR_USER)) });
 
     fetch(endpoint)
       .then((response) => {
@@ -59,8 +75,24 @@ class PostsPage extends React.Component {
       });
   }
 
+  deletePost(id) {
+    const API_URL = process.env.REACT_APP_API_HOST + "/api";
+    const endpoint = API_URL + "/posts"; // 'api/posts
+
+    const requestOptions = {
+      method: "DELETE",
+      headers: authHeader(),
+    };
+
+    fetch(endpoint + "/" + id, requestOptions)
+      .then(response => { console.log(response.data) });
+
+    this.setState({
+      posts: this.state.posts.filter(po => po._id !== id)
+    })
+  }
+
   render() {
-    console.log(this.state.posts)
     return (
       <div className={`view-posts-page`}>
         <h2>Centerling News: All Posts!</h2>
