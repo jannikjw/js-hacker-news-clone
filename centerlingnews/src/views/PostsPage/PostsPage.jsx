@@ -15,8 +15,44 @@ class PostsPage extends React.Component {
 
     this.state = {
       posts: [],
-      currentUser: ''
+      currentUser: []
     };
+  }
+
+  componentDidMount() {
+    const endpointPost = API_URL + "/posts"; // 'api/posts
+
+    fetch(endpointPost)
+      .then((response) => {
+        response.json().then((data) => {
+          //TODO: posts should be sorted in backend
+          data.sort(function (a, b) {
+            return new Date(b.date) - new Date(a.date);
+          })
+          data.reverse()
+          this.setState({ posts: data })
+        });
+      })
+      .catch((error) => {
+        console.log('Fetch Error :-S', error)
+      });
+
+    const endpointUser = API_URL + "/auth/user";
+
+    const requestOptions = {
+      method: "GET",
+      headers: authHeader(),
+    };
+
+    fetch(endpointUser, requestOptions)
+      .then((response) => {
+        response.json().then((text) => {
+          this.setState({ currentUser: text.data })
+        });
+      })
+      .catch((error) => {
+        console.log('Fetch Error :-S', error)
+      });
   }
 
   postList() {
@@ -38,7 +74,8 @@ class PostsPage extends React.Component {
           <tr>
             <td></td>
             <td><Link className="user" to={"/user/" + currentPost.author}>{currentPost.username} </Link></td>
-            {this.showDelete(currentPost._id, currentPost.author)}
+            {this.showEdit(currentPost)}
+            {this.showDelete(currentPost)}
           </tr>
           <tr></tr>
         </React.Fragment>
@@ -46,37 +83,31 @@ class PostsPage extends React.Component {
     })
   }
 
-  showDelete(postID, author) {
-    console.log(this.state.currentUser.username)
-    if (this.state.currentUser._id === author) {
-      console.log("Got here")
-      return (
-        <td><button onClick={() => { this.deletePost(postID) }}>delete</button></td>
-      )
-    }
+  //shows an edit button when current loggedin user is the author of the respective post
+  showEdit(post) {
+    try {
+      console.log(this.state.currentUser.username)
+      if (this.state.currentUser._id === post.author) {
+        console.log("Got here")
+        return (
+          <td><button className="button"><Link to={"/edit/" + post._id} className="link">edit</Link></button></td>
+        )
+      }
+    } catch (err) { }
   }
 
-  componentDidMount() {
-    const endpoint = API_URL + "/posts"; // 'api/posts
-    this.setState({ currentUser: JSON.parse(localStorage.getItem(process.env.REACT_APP_LOCAL_STORAGE_KEY_FOR_USER)) });
-
-    fetch(endpoint)
-      .then((response) => {
-        response.json().then((data) => {
-          data.sort(function (a, b) {
-            return new Date(b.date) - new Date(a.date);
-          })
-          data.reverse()
-          this.setState({ posts: data })
-        });
-      })
-      .catch((error) => {
-        console.log('Fetch Error :-S', error)
-      });
+  //shows a delete button when current loggedin user is the author of the respective post
+  showDelete(post) {
+    try {
+      if (this.state.currentUser._id === post.author) {
+        return (
+          <td><button className="deleteButton" onClick={() => { this.deletePost(post._id) }}>delete</button></td>
+        )
+      }
+    } catch (err) { }
   }
 
   deletePost(id) {
-    const API_URL = process.env.REACT_APP_API_HOST + "/api";
     const endpoint = API_URL + "/posts"; // 'api/posts
 
     const requestOptions = {

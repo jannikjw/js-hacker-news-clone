@@ -127,7 +127,6 @@ class NewPostPage extends React.Component {
         })
 
         .catch((err) => {
-          alert(err.data[0].msg);
           let errors = this.state.errors;
           errors["general"] = err.data.map((e) => (
             <div className="error">{e.msg}</div>
