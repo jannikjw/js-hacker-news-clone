@@ -78,8 +78,27 @@ exports.getAll = [
   (req, res) => {
     try {
       PostModel.find()
-        .then(exercises => res.json(exercises))
-        .catch(err => res.status(400).json('Error: ' + err));
+        .then(posts => res.json(posts))
+    } catch (err) {
+      return apiResponse.ErrorResponse(res, err);
+    }
+  }
+];
+
+/**
+ * Get one post.
+ * 
+ * @returns {Object}
+ */
+
+exports.getOne = [
+  authenticationRequired,
+  rejectRequestsWithValidationErrors,
+  isAuthor,
+  (req, res) => {
+    try {
+      PostModel.findById(req.params.post_id)
+        .then(post => res.json(post))
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }

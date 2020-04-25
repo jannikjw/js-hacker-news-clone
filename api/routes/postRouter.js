@@ -4,7 +4,7 @@ const PostController = require("../controllers/PostController");
 const router = express.Router();
 
 router.get("/", PostController.getAll);
-// router.get("/:post_id", PostController.getOne;
+router.get("/:post_id", PostController.getOne);
 
 //Authentication required
 router.post("/", PostController.createPost); // POST /api/posts/

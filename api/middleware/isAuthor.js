@@ -12,7 +12,7 @@ const isAuthor = (req, res, next) => {
       }
     })
   } catch (err) {
-    return apiResponse.unauthorizedResponse(res, 'No post was found that matches that ID');
+    return apiResponse.notFoundResponse(res, 'No post was found that matches that ID');
   }
 
 };
