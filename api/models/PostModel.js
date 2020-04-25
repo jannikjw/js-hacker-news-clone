@@ -7,6 +7,7 @@ const PostSchema = new Schema(
     url: { type: String, required: true },
     author: { type: String, required: true },
     username: { type: String, required: true },
+    upvoters: { type: [String], required: true }
   },
   {
     timestamps: true,

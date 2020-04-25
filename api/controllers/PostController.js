@@ -200,3 +200,43 @@ exports.update = [
     }
   },
 ];
+
+exports.upvote = [
+  authenticationRequired,
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    try {
+      PostModel.findByIdAndUpdate(req.params.post_id)
+        .then(post => {
+          if (!post.upvoters.includes(req.user._id))
+            post.upvoters.push(req.user._id);
+
+          post.save()
+            .then(() => res.json('Vote added.'))
+            .catch(err => apiResponse.ErrorResponse(res, err))
+        })
+    } catch (err) {
+      return apiResponse.notFoundResponse(res, err);
+    }
+  }
+]
+
+
+exports.unvote = [
+  authenticationRequired,
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    try {
+      PostModel.findByIdAndUpdate(req.params.post_id)
+        .then(post => {
+          post.upvoters.pop(req.user._id);
+
+          post.save()
+            .then(() => res.json('Vote deleted.'))
+            .catch(err => apiResponse.ErrorResponse(res, err))
+        })
+    } catch (err) {
+      return apiResponse.notFoundResponse(res, err);
+    }
+  }
+]
