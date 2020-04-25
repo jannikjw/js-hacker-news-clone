@@ -3,9 +3,9 @@ import qs from "qs";
 
 import { authHeader } from "../../helpers";
 
-import "./NewPostPage.scss";
+import "./EditPostPage.scss";
 
-class NewPostPage extends React.Component {
+class EditPostPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,7 +21,33 @@ class NewPostPage extends React.Component {
       url: query.url || "",
       submitted: false,
       errors: {},
+      id: ""
     };
+  }
+
+  componentDidMount() {
+
+    const API_URL = process.env.REACT_APP_API_HOST + "/api";
+    const endpoint = API_URL + "/posts"; // 'api/posts
+    const postID = this.props.location.pathname.replace("/edit/", "")
+
+    const requestOptions = {
+      method: "GET",
+      headers: authHeader()
+    }
+
+    fetch(endpoint + "/" + postID, requestOptions)
+      .then((response) => {
+        response.json().then((data) => {
+          this.setState({
+            title: data.title,
+            url: data.url
+          })
+        })
+      })
+      .catch((error) => {
+        console.log('Fetch Error :-S', error)
+      });
   }
 
   validate() {
@@ -59,8 +85,8 @@ class NewPostPage extends React.Component {
   render() {
     const { title, url, submitted } = this.state;
     return (
-      <div className={`view-new-post-page`}>
-        <h2>Centerling News: Create a new Post!</h2>
+      <div className={`view-edit-post-page`}>
+        <h2>Centerling News: Edit your Post!</h2>
         <form name="form" onSubmit={this.handleSubmit}>
           <div
             className={"form-group" + (submitted && !title ? " has-error" : "")}
@@ -101,18 +127,20 @@ class NewPostPage extends React.Component {
 
   submit() {
     const { title, url } = this.state;
+    const postID = this.props.location.pathname.replace("/edit/", "")
+
 
     if (this.validate()) {
       const API_URL = process.env.REACT_APP_API_HOST + "/api";
       const endpoint = API_URL + "/posts"; // 'api/posts'
 
       const requestOptions = {
-        method: "POST",
+        method: "PUT",
         headers: authHeader(),
         body: JSON.stringify({ title, url }),
       };
 
-      fetch(endpoint, requestOptions)
+      fetch(endpoint + "/" + postID, requestOptions)
         .then((response) => {
           return response.text().then((text) => {
             const data = text && JSON.parse(text);
@@ -122,12 +150,13 @@ class NewPostPage extends React.Component {
               return Promise.reject(error);
             }
             console.log(data);
-            alert("We have updated your post");
+            alert("We have created your post");
           });
         })
 
         .catch((err) => {
           let errors = this.state.errors;
+          console.log(err)
           errors["general"] = err.data.map((e) => (
             <div className="error">{e.msg}</div>
           ));
@@ -136,10 +165,10 @@ class NewPostPage extends React.Component {
             errors: errors,
           });
         });
-
-      window.location = '/posts'
     }
+
+    window.location = '/posts'
   }
 }
 
-export { NewPostPage };
+export { EditPostPage };
