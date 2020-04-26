@@ -38,13 +38,20 @@
     text-decoration: none;
   }
 
-  .deleteButton {
+  button {
     color: rgb(97, 97, 97);
     cursor: pointer;
+    width: 55px;
+    text-align: center;
+  
+    .deleteButton {
+      color: rgb(97, 97, 97);
+      cursor: pointer;
 
-    &:hover {
-      background-color: red;
-      color: white;
+      &:hover {
+        background-color: red;
+        color: white;
+      }
     }
   }
 

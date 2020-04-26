@@ -19,6 +19,8 @@ import { ResetPasswordPage } from "./views/ResetPasswordPage";
 import { NewPostPage } from "./views/NewPostPage";
 import { PostsPage } from "./views/PostsPage";
 import { EditPostPage } from "./views/EditPostPage/EditPostPage";
+import Navbar from "./components/Navbar"
+
 
 class App extends React.Component {
   constructor(props) {
@@ -45,6 +47,7 @@ class App extends React.Component {
     return (
       <div className="container">
         <Router history={history}>
+          <Navbar />
           {this.shouldShowApplication() && (
             <div>
               <Route exact path="/" component={HomePage} />
