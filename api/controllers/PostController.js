@@ -1,10 +1,10 @@
 const PostModel = require("../models/PostModel");
+const CommentModel = require("../models/CommentModel");
 
 const { body, query, param } = require("express-validator");
 const rejectRequestsWithValidationErrors = require("../middleware/rejectRequestsWithValidationErrors");
 const authenticationRequired = require("../middleware/authenticationRequired");
 const authenticationOptional = require("../middleware/authenticationOptional");
-const injectPostFromID = require("../middleware/injectPostFromID");
 const isAuthor = require("../middleware/isAuthor");
 
 const apiResponse = require("../helpers/apiResponse");
@@ -205,7 +205,6 @@ exports.upvote = [
   }
 ]
 
-
 exports.unvote = [
   authenticationRequired,
   rejectRequestsWithValidationErrors,
@@ -213,7 +212,7 @@ exports.unvote = [
     try {
       PostModel.findByIdAndUpdate(req.params.post_id)
         .then(post => {
-          post.upvoters.pop(req.user._id);
+          post.upvoters = post.upvoters.filter(uv => uv !== req.user._id);
 
           post.save()
             .then(() => res.json('Vote deleted.'))
@@ -221,6 +220,48 @@ exports.unvote = [
         })
     } catch (err) {
       return apiResponse.notFoundResponse(res, err);
+    }
+  }
+]
+
+exports.createComment = [
+  authenticationRequired,
+  body("content", "Content is required.")
+    .isLength({ min: 1 })
+    .withMessage("The content cannot be empty.")
+    .trim(),
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    try {
+      //Create comment
+      let commentID = '';
+      PostModel.findByIdAndUpdate(req.params.post_id)
+        .then(post => {
+          let comment = CommentModel({
+            post: req.params.post_id,
+            content: req.body.content,
+            author: req.user._id,
+            username: req.user.username,
+          })
+          commentID = comment._id
+
+          comment.save((err, savedComment) => {
+            post.comments.push(commentID)
+            post.save()
+
+            if (err) {
+              return apiResponse.ErrorResponse(res, err);
+            }
+            let commentData = comment.toApiRepresentation(req.user._id);
+            return apiResponse.successResponseWithData(
+              res,
+              "Comment successfully created",
+              commentData
+            );
+          })
+        })
+    } catch (err) {
+      return apiResponse.ErrorResponse(res, err);
     }
   }
 ]

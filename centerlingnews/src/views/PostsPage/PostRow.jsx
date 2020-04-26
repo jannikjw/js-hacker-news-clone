@@ -86,7 +86,7 @@ class PostRow extends Component {
   }
 
   render() {
-    const { _id, url, title, upvoters, author, username } = this.props.post
+    const { _id, url, title, author, username, comments } = this.props.post
     let hostName = new URL(url).hostname;
     hostName = hostName.replace('www.', '');
 
@@ -106,6 +106,7 @@ class PostRow extends Component {
           <td>{this.showDelete(this.props.post)}</td>
           <td><button onClick={() => { this.votePost(_id) }}>{this.state.isVoted ? "unvote" : "vote"}</button></td>
           <td>{this.state.upvoteCount}</td>
+          <td>{comments.length}</td>
         </tr>
       </React.Fragment>
     )
