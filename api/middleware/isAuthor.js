@@ -5,6 +5,9 @@ const PostModel = require("../models/PostModel");
 const isAuthor = (req, res, next) => {
   try {
     PostModel.findById(req.params.post_id, 'author', function (err, post) {
+      if (!post) {
+        return apiResponse.notFoundResponse(res, 'No post was found that matches that ID');
+      }
       if (post.author === req.user._id) {
         next();
       } else {
