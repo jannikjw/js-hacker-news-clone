@@ -92,9 +92,8 @@ exports.getAll = [
  */
 
 exports.getOne = [
-  authenticationRequired,
+  authenticationOptional,
   rejectRequestsWithValidationErrors,
-  isAuthor,
   (req, res) => {
     try {
       PostModel.findById(req.params.post_id)
@@ -111,25 +110,6 @@ exports.getOne = [
  * 
  * @returns {Object}
  */
-// exports.delete = [
-//   authenticationRequired,
-//   rejectRequestsWithValidationErrors,
-//   (req, res) => {
-//     try {
-//       PostModel.findById(req.params.post_id, 'author', function (err, post) {
-//         if (post.author === req.user._id) {
-//           PostModel.findByIdAndDelete(req.params.post_id)
-//             .then(() => res.json('Post deleted.'))
-//         } else {
-//           return apiResponse.unauthorizedResponse(res, 'You do not have the right to delete this post!')
-//         }
-//       })
-//     } catch (err) {
-//       return apiResponse.ErrorResponse(res, err);
-//     }
-//   }
-// ];
-
 exports.delete = [
   authenticationRequired,
   rejectRequestsWithValidationErrors,
