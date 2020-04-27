@@ -12,7 +12,7 @@ class PostsPage extends React.Component {
 
     this.componentDidMount = this.componentDidMount.bind(this);
     this.deletePost = this.deletePost.bind(this);
-    this.getCurrentUser = this.getCurrentUser.bind(this);
+    this.getUser = this.getUser.bind(this);
     this.getPosts = this.getPosts.bind(this);
 
     this.state = {
@@ -21,7 +21,7 @@ class PostsPage extends React.Component {
     };
   }
 
-  getCurrentUser() {
+  getUser() {
     //Get current User
     const endpoint = API_URL + "/auth/user";
 
@@ -42,19 +42,14 @@ class PostsPage extends React.Component {
 
     fetch(endpoint)
       .then((response) => response.json())
-      .then((data) => {
-        //TODO: posts should be sorted in backend
-        data.sort(function (a, b) { return new Date(b.date) - new Date(a.date) })
-        data.reverse()
-        this.setState({ posts: data })
-      })
+      .then((data) => this.setState({ posts: data }))
       .catch((error) => {
-        console.log('Fetch Error :-S', error)
+        console.error('Fetch Error :-S', error)
       });
   }
 
   componentDidMount() {
-    this.getCurrentUser();
+    this.getUser();
     this.getPosts();
   }
 
@@ -63,13 +58,13 @@ class PostsPage extends React.Component {
   }
 
   render() {
-    const { currentUser } = this.state
+    const { currentUser, posts } = this.state
     return (
       <div className={`view-posts-page`}>
         <h2>Centerling News</h2>
         <table>
           <tbody>
-            {this.state.posts.map((post, index) =>
+            {posts.map((post, index) =>
               <PostRow
                 key={post._id}
                 post={post}

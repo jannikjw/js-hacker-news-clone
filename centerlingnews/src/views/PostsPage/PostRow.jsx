@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import { authHeader } from "../../helpers";
 
-
 const API_URL = process.env.REACT_APP_API_HOST + "/api";
+
 
 class PostRow extends Component {
   constructor(props) {
@@ -87,35 +87,40 @@ class PostRow extends Component {
   }
 
   render() {
+    const { post, index } = this.props
     const { _id, url, title, author, username, comments } = this.props.post
+    const { upvoteCount, isVoted } = this.state
+
     let hostName = new URL(url).hostname;
     hostName = hostName.replace('www.', '');
 
     return (
       <React.Fragment key={_id}>
         <tr>
-          <td className="title">{this.props.index + 1}</td>
-          <td>
+          <td className="index">{index + 1}</td>
+          <td className="title">
             <a href={url} rel="noopener noreferrer" target="_blank" className="title">{title}</a>
             <span className="url"> (<a href={url} rel="noopener noreferrer" target="blank"><span>{hostName}</span></a>)</span>
           </td>
         </tr>
         <tr>
           <td></td>
-          <td><Link className="user" to={"/user/" + author}>{username}</Link></td>
+          <td>
+            {upvoteCount} votes by
+            <Link className="user" to={"/user/" + author}> {username}</Link>
+          </td>
           <td>{this.isAuthor(author) && <button><Link to={"/edit/" + _id} className="link">edit</Link></button>}</td>
-          <td>{this.showDelete(this.props.post)}</td>
-          <td><button onClick={() => { this.votePost(_id) }}>{this.state.isVoted ? "unvote" : "vote"}</button></td>
-          <td>{this.state.upvoteCount}</td>
-          <td><Link to={"/posts/" + _id}>Comments: {comments.length}</Link></td>
+          <td>{this.showDelete(post)}</td>
+          <td><button onClick={() => { this.votePost(_id) }}>{isVoted ? "unvote" : "vote"}</button></td>
+          <td>
+            <Link to={"/posts/" + _id}>
+              {comments.length + " " + (comments.length > 1 ? "comments" : "comment")}
+            </Link>
+          </td>
         </tr>
       </React.Fragment>
     )
   }
-
-
 }
-
-
 
 export default PostRow
