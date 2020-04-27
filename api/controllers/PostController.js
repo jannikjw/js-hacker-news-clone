@@ -70,14 +70,13 @@ exports.createPost = [
  * 
  * @returns {Object}
  */
-
-
 exports.getAll = [
   authenticationOptional,
   rejectRequestsWithValidationErrors,
   (req, res) => {
     try {
       PostModel.find()
+        .sort({ createdAt: -1 })
         .then(posts => res.json(posts))
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
@@ -165,6 +164,11 @@ exports.update = [
   },
 ];
 
+/**
+ * Add an upvote to a post.
+ * 
+ * @returns {Object}
+ */
 exports.upvote = [
   authenticationRequired,
   rejectRequestsWithValidationErrors,
@@ -185,6 +189,11 @@ exports.upvote = [
   }
 ]
 
+/**
+ * Delete Vote from a post.
+ * 
+ * @returns {Object}
+ */
 exports.unvote = [
   authenticationRequired,
   rejectRequestsWithValidationErrors,
@@ -204,6 +213,11 @@ exports.unvote = [
   }
 ]
 
+/**
+ * Create a comment to a post.
+ * 
+ * @returns {Comment}
+ */
 exports.createComment = [
   authenticationRequired,
   body("content", "Content is required.")
@@ -239,9 +253,30 @@ exports.createComment = [
               commentData
             );
           })
+        }).catch((err) => {
+          return apiResponse.ErrorResponse(res, err);
         })
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
   }
 ]
+
+/**
+ * Get all comments for a specific post.
+ * 
+ * @returns {Object}
+ */
+exports.getComments = [
+  authenticationOptional,
+  rejectRequestsWithValidationErrors,
+  (req, res) => {
+    try {
+      CommentModel.find({ "post": req.params.post_id })
+        .sort({ createdAt: -1 })
+        .then(comments => res.json(comments))
+    } catch (err) {
+      return apiResponse.ErrorResponse(res, err);
+    }
+  }
+];
