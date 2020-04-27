@@ -1,0 +1,58 @@
+// styling specific for the specific component
+.view-posts-page {
+  .title {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 1.2em;
+
+    &:visited {
+      color: rgb(196, 238, 128);
+    }
+  }
+
+  .url {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+
+    a {
+      color: rgb(97, 97, 97);
+      text-decoration: none;
+  
+      &:hover {
+      text-decoration: underline;
+      }
+    }
+  }
+
+  .user {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .link {
+    color: rgb(97, 97, 97);
+    text-decoration: none;
+  }
+
+  button {
+    color: rgb(97, 97, 97);
+    cursor: pointer;
+    width: 55px;
+    text-align: center;
+  
+    .deleteButton {
+      color: rgb(97, 97, 97);
+      cursor: pointer;
+
+      &:hover {
+        background-color: red;
+        color: white;
+      }
+    }
+  }
+
+}

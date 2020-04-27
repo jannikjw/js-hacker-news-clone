@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import { authHeader } from "../../helpers";
 
+
 const API_URL = process.env.REACT_APP_API_HOST + "/api";
 
 class PostRow extends Component {
@@ -106,7 +107,7 @@ class PostRow extends Component {
           <td>{this.showDelete(this.props.post)}</td>
           <td><button onClick={() => { this.votePost(_id) }}>{this.state.isVoted ? "unvote" : "vote"}</button></td>
           <td>{this.state.upvoteCount}</td>
-          <td>{comments.length}</td>
+          <td><Link to={"/posts/" + _id}>Comments: {comments.length}</Link></td>
         </tr>
       </React.Fragment>
     )

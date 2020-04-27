@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from 'react-router-dom';
 import { authHeader } from "../../helpers";
 import PostRow from "./PostRow";
 
@@ -64,6 +63,7 @@ class PostsPage extends React.Component {
   }
 
   render() {
+    const { currentUser } = this.state
     return (
       <div className={`view-posts-page`}>
         <h2>Centerling News</h2>
@@ -74,7 +74,7 @@ class PostsPage extends React.Component {
                 key={post._id}
                 post={post}
                 index={index}
-                userID={this.state.currentUser._id}
+                userID={currentUser && currentUser._id}
                 deletePost={this.deletePost} />)}
           </tbody>
         </table>
