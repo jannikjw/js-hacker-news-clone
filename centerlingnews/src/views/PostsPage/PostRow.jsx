@@ -98,21 +98,21 @@ class PostRow extends Component {
       <React.Fragment key={_id}>
         <tr>
           <td className="index">{index + 1}</td>
-          <td className="title">
+          <td colSpan="12" className="title">
             <a href={url} rel="noopener noreferrer" target="_blank" className="title">{title}</a>
             <span className="url"> (<a href={url} rel="noopener noreferrer" target="blank"><span>{hostName}</span></a>)</span>
           </td>
         </tr>
         <tr>
           <td></td>
-          <td>
+          <td colSpan="6">
             {upvoteCount} votes by
             <Link className="user" to={"/user/" + author}> {username}</Link>
           </td>
-          <td>{this.isAuthor(author) && <button><Link to={"/edit/" + _id} className="link">edit</Link></button>}</td>
-          <td>{this.showDelete(post)}</td>
-          <td><button onClick={() => { this.votePost(_id) }}>{isVoted ? "unvote" : "vote"}</button></td>
-          <td>
+          <td colSpan="1">{this.isAuthor(author) && <button><Link to={"/edit/" + _id} className="link">edit</Link></button>}</td>
+          <td colSpan="1">{this.showDelete(post)}</td>
+          <td colSpan="1"><button onClick={() => { this.votePost(_id) }}>{isVoted ? "unvote" : "vote"}</button></td>
+          <td colSpan="3">
             <Link to={"/posts/" + _id}>
               {comments.length + " " + (comments.length > 1 ? "comments" : "comment")}
             </Link>
