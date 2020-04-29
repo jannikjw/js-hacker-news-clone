@@ -4,6 +4,7 @@ import { authHeader } from "../../helpers";
 
 const API_URL = process.env.REACT_APP_API_HOST + "/api";
 
+
 class PostRow extends Component {
   constructor(props) {
     super(props)
@@ -86,34 +87,42 @@ class PostRow extends Component {
   }
 
   render() {
-    const { _id, url, title, upvoters, author, username } = this.props.post
+    const { post, index } = this.props
+    const { _id, url, title, author, username, comments } = this.props.post
+    const { upvoteCount, isVoted } = this.state
+
     let hostName = new URL(url).hostname;
     hostName = hostName.replace('www.', '');
 
     return (
       <React.Fragment key={_id}>
-        <tr>
-          <td className="title">{this.props.index + 1}</td>
-          <td>
-            <a href={url} rel="noopener noreferrer" target="_blank" className="title">{title}</a>
-            <span className="url"> (<a href={url} rel="noopener noreferrer" target="blank"><span>{hostName}</span></a>)</span>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><Link className="user" to={"/user/" + author}>{username}</Link></td>
-          <td>{this.isAuthor(author) && <button><Link to={"/edit/" + _id} className="link">edit</Link></button>}</td>
-          <td>{this.showDelete(this.props.post)}</td>
-          <td><button onClick={() => { this.votePost(_id) }}>{this.state.isVoted ? "unvote" : "vote"}</button></td>
-          <td>{this.state.upvoteCount}</td>
-        </tr>
-      </React.Fragment>
+        <tbody className="card">
+          <tr className="container">
+            <td className="index">{index + 1}</td>
+            <td colSpan="12" className="title">
+              <a href={url} rel="noopener noreferrer" target="_blank" className="title">{title}</a>
+              <span className="url"> (<a href={url} rel="noopener noreferrer" target="blank"><span>{hostName}</span></a>)</span>
+            </td>
+          </tr>
+          <tr className="container">
+            <td></td>
+            <td colSpan="6">
+              {upvoteCount} votes by
+            <Link className="user" to={"/user/" + author}> {username}</Link>
+            </td>
+            <td colSpan="1">{this.isAuthor(author) && <button><Link to={"/edit/" + _id} className="link">edit</Link></button>}</td>
+            <td colSpan="1">{this.showDelete(post)}</td>
+            <td colSpan="1"><button onClick={() => { this.votePost(_id) }}>{isVoted ? "unvote" : "vote"}</button></td>
+            <td colSpan="3">
+              <Link to={"/posts/" + _id}>
+                {(comments.length === 0 ? "No comments" : ((comments.length + " ") + (comments.length > 1 ? "comments" : "comment")))}
+              </Link>
+            </td>
+          </tr>
+        </tbody >
+      </React.Fragment >
     )
   }
-
-
 }
-
-
 
 export default PostRow
