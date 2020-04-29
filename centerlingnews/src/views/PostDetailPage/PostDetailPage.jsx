@@ -181,8 +181,8 @@ class PostDetailPage extends React.Component {
     return (
       <div className={`view-post-detail-page`}>
         <table>
-          <tbody>
-            <tr><td className="title">{post.title}</td></tr>
+          <tbody className="form-group">
+            <tr><td className="title"><h2>{post.title}</h2></td></tr>
             <tr><td className="url">({hostName})</td></tr>
             <tr>
               <td>

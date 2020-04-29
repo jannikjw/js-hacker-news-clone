@@ -1,64 +1,62 @@
-@use "../../resources/style/index";
-
 // styling specific for the specific component
 .view-post-detail-page {
-  .title {
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-    font-size: 1.2em;
+  // .title {
+  //   color: rgb(0, 0, 0);
+  //   text-decoration: none;
+  //   font-size: 1.2em;
 
-    &:visited {
-      color: rgb(196, 238, 128);
-    }
-  }
+  //   &:visited {
+  //     color: rgb(196, 238, 128);
+  //   }
+  // }
 
-  .url {
-    color: rgb(97, 97, 97);
-    text-decoration: none;
+  // .url {
+  //   color: rgb(97, 97, 97);
+  //   text-decoration: none;
 
-    a {
-      color: rgb(97, 97, 97);
-      text-decoration: none;
+  //   a {
+  //     color: rgb(97, 97, 97);
+  //     text-decoration: none;
   
-      &:hover {
-      text-decoration: underline;
-      }
-    }
-  }
+  //     &:hover {
+  //     text-decoration: underline;
+  //     }
+  //   }
+  // }
 
-  .user {
-    color: rgb(97, 97, 97);
-    text-decoration: none;
+  // .user {
+  //   color: rgb(97, 97, 97);
+  //   text-decoration: none;
 
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  //   &:hover {
+  //     text-decoration: underline;
+  //   }
+  // }
 
-  .link {
-    color: rgb(97, 97, 97);
-    text-decoration: none;
-  }
+  // .link {
+  //   color: rgb(97, 97, 97);
+  //   text-decoration: none;
+  // }
 
-  button {
-    color: rgb(97, 97, 97);
-    cursor: pointer;
-    width: 55px;
-    text-align: center;
+  // button {
+  //   color: rgb(97, 97, 97);
+  //   cursor: pointer;
+  //   width: 55px;
+  //   text-align: center;
   
-    .deleteButton {
-      color: rgb(97, 97, 97);
-      cursor: pointer;
+  //   .deleteButton {
+  //     color: rgb(97, 97, 97);
+  //     cursor: pointer;
 
-      &:hover {
-        background-color: red;
-        color: white;
-      }
-    }
-  }
+  //     &:hover {
+  //       background-color: red;
+  //       color: white;
+  //     }
+  //   }
+  // }
 
-  .comment {
-    background-color: white;
-  }
+  // .comment {
+  //   background-color: white;
+  // }
 
 }

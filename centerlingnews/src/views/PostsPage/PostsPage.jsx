@@ -63,15 +63,13 @@ class PostsPage extends React.Component {
       <div className={`view-posts-page`}>
         <h2>Centerling News</h2>
         <table>
-          <tbody>
-            {posts.map((post, index) =>
-              <PostRow
-                key={post._id}
-                post={post}
-                index={index}
-                userID={currentUser && currentUser._id}
-                deletePost={this.deletePost} />)}
-          </tbody>
+          {posts.map((post, index) =>
+            <PostRow
+              key={post._id}
+              post={post}
+              index={index}
+              userID={currentUser && currentUser._id}
+              deletePost={this.deletePost} />)}
         </table>
       </div>
     );

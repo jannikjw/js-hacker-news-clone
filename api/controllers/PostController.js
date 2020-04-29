@@ -37,7 +37,7 @@ exports.createPost = [
     .withMessage("Please enter a valid URL leading with https:// or http://.")
     .trim(),
   rejectRequestsWithValidationErrors,
-  (req, res) => {
+  async (req, res) => {
     try {
       let post = PostModel({
         title: req.body.title,
@@ -46,19 +46,23 @@ exports.createPost = [
         username: req.user.username,
       });
 
+      const savedPost = await post.save();
 
-      post.save((err, savedPost) => {
-        if (err) {
-          return apiResponse.ErrorResponse(res, err);
-        }
+      let postData = savedPost.toApiRepresentation(req.user._id);
+      return apiResponse.successResponseWithData(
+        res,
+        "Post successfully created",
+        postData
+      );
+
+      /*post.save().then(post => {
         let postData = post.toApiRepresentation(req.user._id);
-        // savedPost.updateLastInteraction(0);
         return apiResponse.successResponseWithData(
           res,
           "Post successfully created",
           postData
         );
-      });
+      }).catch(err => apiResponse.ErrorResponse(res, err));*/
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
@@ -78,6 +82,7 @@ exports.getAll = [
       PostModel.find()
         .sort({ createdAt: -1 })
         .then(posts => res.json(posts))
+        .catch(err => apiResponse.notFoundResponse(res, err))
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
@@ -97,6 +102,7 @@ exports.getOne = [
     try {
       PostModel.findById(req.params.post_id)
         .then(post => res.json(post))
+        .catch(err => apiResponse.notFoundResponse(res, err))
     } catch (err) {
       return apiResponse.ErrorResponse(res, err);
     }
@@ -114,9 +120,10 @@ exports.delete = [
   rejectRequestsWithValidationErrors,
   isAuthor,
   (req, res) => {
-    PostModel.findByIdAndDelete(req.params.post_id)
+    Promise.resolve()
+      .then(() => PostModel.findByIdAndDelete(req.params.post_id))
       .then(() => res.json('Post deleted.'))
-      .catch((err) => apiResponse.ErrorResponse(res, err))
+      .catch(err => apiResponse.ErrorResponse(res, err))
   }
 ];
 

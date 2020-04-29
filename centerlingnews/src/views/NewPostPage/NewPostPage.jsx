@@ -60,40 +60,36 @@ class NewPostPage extends React.Component {
     const { title, url, submitted } = this.state;
     return (
       <div className={`view-new-post-page`}>
-        <h2>Centerling News: Create a new Post!</h2>
+        <h2>Create a new Post!</h2>
         <form name="form" onSubmit={this.handleSubmit}>
           <div
             className={"form-group" + (submitted && !title ? " has-error" : "")}
           >
-            <label>
-              Title:
-              <input
-                type="text"
-                value={title}
-                onChange={this.handleChange}
-                className="form-control"
-                name="title"
-              />
-              <div className="error">{this.state.errors.title}</div>
-            </label>
+            <label>Title</label>
+            <input
+              type="text"
+              value={title}
+              onChange={this.handleChange}
+              className="form-control"
+              name="title"
+            />
+            <div className="error">{this.state.errors.title}</div>
           </div>
           <div
             className={"form-group" + (submitted && !url ? " has-error" : "")}
           >
-            <label>
-              URL:
-              <input
-                type="text"
-                value={url}
-                onChange={this.handleChange}
-                className="form-control"
-                name="url"
-              />
-              <div className="error">{this.state.errors.url}</div>
-            </label>
+            <label>URL</label>
+            <input
+              type="text"
+              value={url}
+              onChange={this.handleChange}
+              className="form-control"
+              name="url"
+            />
+            <div className="error">{this.state.errors.url}</div>
           </div>
           <div className="error">{this.state.errors.general}</div>
-          <input type="submit" value="Submit" />
+          <div className="form-group"><input type="submit" value="Submit" /></div>
         </form>
       </div>
     );
