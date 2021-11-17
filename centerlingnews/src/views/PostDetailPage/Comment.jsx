@@ -6,13 +6,15 @@ const Comment = props => {
 
   return (
     <React.Fragment key={_id}>
-      <tr>
-        <td>
-          <Link className="user" to={"/user/" + author}>{username}</Link>
-          <span className="time"> | ({createdAt === ("just now") ? "just now" : (createdAt.substring(0, 10) + " " + createdAt.substring(11, 19))})</span>
-        </td>
-      </tr>
-      <tr><td>{content}</td></tr>
+      <tbody className="card">
+        <tr>
+          <td>
+            <Link className="user" to={"/user/" + author}>{username}</Link>
+            <span className="time"> | ({createdAt === ("just now") ? "just now" : (createdAt.substring(0, 10) + " " + createdAt.substring(11, 19))})</span>
+          </td>
+        </tr>
+        <tr><td>{content}</td></tr>
+      </tbody>
     </React.Fragment>
   )
 }
